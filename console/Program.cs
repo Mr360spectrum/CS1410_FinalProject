@@ -1,4 +1,5 @@
 ﻿using System;
+using lib;
 
 namespace console
 {
@@ -6,7 +7,7 @@ namespace console
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+            var game = GameHelper.DisplayMainMenu();
         }
     }
 }

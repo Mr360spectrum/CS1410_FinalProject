@@ -2,17 +2,14 @@ namespace lib;
 
 public class GameHelper : IHelper
 {
-    public static Game DisplayMainMenu()
+    public static Game GetGame()
     {
-        var defaultColor = ConsoleColor.DarkGreen;
-        var highlightColor = ConsoleColor.DarkRed;
-        string[] options = new string[3]{"New Game", "Load Game", "Exit"};
-        int cursorPos = 0;
+        string[] options = new string[3] { "New Game", "Load Game", "Exit" };
 
         while (true)
         {
             Console.Clear();
-            Console.WriteLine(@"
+            string logo = @"
       :::::::::  :::::::::   ::::::::          ::::::::      :::       :::   :::   :::::::::: 
      :+:    :+: :+:    :+: :+:    :+:        :+:    :+:   :+: :+:    :+:+: :+:+:  :+:         
     +:+    +:+ +:+    +:+ +:+               +:+         +:+   +:+  +:+ +:+:+ +:+ +:+          
@@ -21,7 +18,33 @@ public class GameHelper : IHelper
  #+#    #+# #+#        #+#    #+#        #+#    #+# #+#     #+# #+#       #+# #+#             
 ###    ### ###         ########          ########  ###     ### ###       ### ##########    
 
-");
+";
+            Console.WriteLine("Use the arrow keys to navigate.");
+            int selection = DisplayMenu(logo, options);
+            switch (selection)
+            {
+                case 0:
+                    return StartNewGame();
+                case 1:
+                    return LoadGame();
+                case 2:
+                    System.Environment.Exit(1);
+                    break;
+            }
+        }
+    }
+
+    private static int DisplayMenu(string logo, string[] options)
+    {
+        var defaultColor = ConsoleColor.DarkGreen;
+        var highlightColor = ConsoleColor.DarkRed;
+        int cursorPos = 0;
+        int maxPos = options.Length - 1;
+
+        while (true)
+        {
+            Console.Clear();
+            Console.WriteLine(logo);
             Console.WriteLine("Use the arrow keys to navigate.");
             foreach (var option in options)
             {
@@ -36,42 +59,36 @@ public class GameHelper : IHelper
                     Console.WriteLine($"   {option}");
                 }
             }
-            
+
             var key = Console.ReadKey().Key;
             switch (key)
             {
                 case ConsoleKey.DownArrow:
-                    if (cursorPos == 2)
+                    //Loop back to top if "down" is pressed while cursor is at bottom
+                    if (cursorPos == maxPos)
                     {
                         cursorPos = 0;
                     }
+                    //Move down
                     else
                     {
                         cursorPos++;
                     }
                     break;
                 case ConsoleKey.UpArrow:
+                    //Loop back to bottom if "up" is pressed while cursor is at top
                     if (cursorPos == 0)
                     {
-                        cursorPos = 2;
+                        cursorPos = maxPos;
                     }
+                    //Move up
                     else
                     {
                         cursorPos--;
                     }
                     break;
                 case ConsoleKey.Enter:
-                    switch (cursorPos)
-                    {
-                        case 0:
-                            return StartNewGame();
-                        case 1:
-                            return LoadGame();
-                        case 2:
-                            System.Environment.Exit(1);
-                            break;
-                    }
-                    break;
+                    return cursorPos;
             }
         }
     }

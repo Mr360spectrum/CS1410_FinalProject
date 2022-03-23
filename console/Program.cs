@@ -7,7 +7,7 @@ namespace console
     {
         static void Main(string[] args)
         {
-            var game = GameHelper.DisplayMainMenu();
+            var game = GameHelper.GetGame();
         }
     }
 }

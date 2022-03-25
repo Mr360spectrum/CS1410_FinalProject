@@ -8,6 +8,7 @@ namespace console
         static void Main(string[] args)
         {
             var game = GameHelper.GetGame();
+            Console.WriteLine(game.GetPlayerName());
         }
     }
 }

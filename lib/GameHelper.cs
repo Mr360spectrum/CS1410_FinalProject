@@ -97,15 +97,21 @@ public class GameHelper : IHelper
     private static Game LoadGame()
     {
         //!REMOVE
-        Console.WriteLine("Loading!");
-        return new Game();
+        var loadLogo = "LOAD";
+        var nameOptions = new string[]{"Bob", "Joe", "Phil", "Larry"};
+        var nameSelection = DisplayMenu(loadLogo, nameOptions);
+
+        return new Game(nameOptions[nameSelection]);
     }
 
     private static Game StartNewGame()
     {
         //!REMOVE
+        Console.Clear();
         Console.WriteLine("Starting a new game...");
-        return new Game();
+        Console.WriteLine("What's your name?");
+        string name = Console.ReadLine();
+        return new Game(name);
     }
 
     public void Save()

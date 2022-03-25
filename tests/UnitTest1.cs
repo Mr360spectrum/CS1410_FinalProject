@@ -11,8 +11,9 @@ public class Tests
     }
 
     [Test]
-    public void Test1()
+    public void TestPlayerName()
     {
-        Assert.Pass();
+        var game = new Game("Test");
+        Assert.AreEqual("Test", game.GetPlayerName());
     }
 }

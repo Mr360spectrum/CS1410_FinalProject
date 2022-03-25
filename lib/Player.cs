@@ -1,4 +1,5 @@
 namespace lib;
+using System.Collections.Generic;
 
 public class Player
 {
@@ -22,8 +23,16 @@ public class Player
         }
     }
 
+    private List<Item> inventory;
+
     public Player(string inName)
     {
         this.name = inName;
+        this.inventory = new List<Item>();
+    }
+    public Player(string inName, List<Item> inInventory)
+    {
+        this.name = inName;
+        inventory = inInventory;
     }
 }

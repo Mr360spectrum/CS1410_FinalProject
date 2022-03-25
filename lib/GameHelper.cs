@@ -106,7 +106,7 @@ public class GameHelper : IHelper
         var nameOptions = new string[]{"Bob", "Joe", "Phil", "Larry"};
         var nameSelection = DisplayMenu(loadLogo, nameOptions, "Select a saved game.");
 
-        return new Game(nameOptions[nameSelection]);
+        return new Game(nameOptions[nameSelection], new List<Item>{new Weapon("Weapon 1"), new Weapon("Weapon 2"), new CraftingItem("Craft 1")});
     }
 
     private static Game StartNewGame()

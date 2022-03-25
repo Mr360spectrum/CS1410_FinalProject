@@ -8,6 +8,10 @@ public class Game
     {
         this.player = new Player(inName);
     }
+    public Game(string inName, List<Item> inventory)
+    {
+        this.player = new Player(inName, inventory);
+    }
 
     public string GetPlayerName()
     {

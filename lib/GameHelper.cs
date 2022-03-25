@@ -33,7 +33,7 @@ public class GameHelper : IHelper
         }
     }
 
-    private static int DisplayMenu(string logo, string[] options)
+    private static int DisplayMenu(string logo, string[] options, string message = "")
     {
         var defaultColor = ConsoleColor.DarkGreen;
         var highlightColor = ConsoleColor.DarkRed;
@@ -45,8 +45,13 @@ public class GameHelper : IHelper
             //TODO: Have the cursor move back and rewrite the highlighted 
             //line instead of clearing the whole screen to prevent flickering
             Console.Clear();
+            Console.ForegroundColor = defaultColor;
             Console.WriteLine(logo);
             Console.WriteLine("Use the arrow keys to navigate.");
+            if (message != "")
+            {
+                Console.WriteLine(message);
+            }
             foreach (var option in options)
             {
                 if (options[cursorPos] == option)
@@ -99,7 +104,7 @@ public class GameHelper : IHelper
         //!REMOVE
         var loadLogo = "LOAD";
         var nameOptions = new string[]{"Bob", "Joe", "Phil", "Larry"};
-        var nameSelection = DisplayMenu(loadLogo, nameOptions);
+        var nameSelection = DisplayMenu(loadLogo, nameOptions, "Select a saved game.");
 
         return new Game(nameOptions[nameSelection]);
     }

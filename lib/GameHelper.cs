@@ -19,7 +19,6 @@ public class GameHelper : IHelper
 ###    ### ###         ########          ########  ###     ### ###       ### ##########    
 
 ";
-            Console.WriteLine("Use the arrow keys to navigate.");
             int selection = DisplayMenu(logo, options);
             switch (selection)
             {
@@ -43,6 +42,8 @@ public class GameHelper : IHelper
 
         while (true)
         {
+            //TODO: Have the cursor move back and rewrite the highlighted 
+            //line instead of clearing the whole screen to prevent flickering
             Console.Clear();
             Console.WriteLine(logo);
             Console.WriteLine("Use the arrow keys to navigate.");
@@ -97,7 +98,6 @@ public class GameHelper : IHelper
     {
         //!REMOVE
         Console.WriteLine("Loading!");
-        //TODO: Implement universal menu method that takes in an array of options
         return new Game();
     }
 
@@ -112,9 +112,4 @@ public class GameHelper : IHelper
     {
         throw new NotImplementedException();
     }
-}
-
-public class Game
-{
-
 }

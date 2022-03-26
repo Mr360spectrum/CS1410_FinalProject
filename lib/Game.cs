@@ -17,4 +17,10 @@ public class Game
     {
         return this.player.Name;
     }
+
+    public void Play()
+    {
+        player.ShowInventory();
+    }
+
 }

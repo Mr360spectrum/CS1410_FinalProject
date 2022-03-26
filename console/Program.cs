@@ -9,6 +9,10 @@ namespace console
         {
             var game = GameHelper.GetGame();
             Console.WriteLine(game.GetPlayerName());
+            while (true)
+            {
+                game.Play();
+            }
         }
     }
 }

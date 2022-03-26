@@ -4,21 +4,7 @@ public abstract class Item
 {
     public string Name
     {
-        get
-        {
-            if (Name == "" || Name is null)
-            {
-                throw new EmptyNameException("'Name' returned null or an empty string.");
-            }
-            return Name;
-        }
-        protected set
-        {
-            if (value == "" || value is null)
-            {
-                throw new EmptyNameException("Item name cannot be set to null or an empty string.");
-            }
-        }
+        get; protected set;
     }
     public bool Equippable { get; protected set; }
     protected ItemType type;
@@ -42,9 +28,9 @@ public class CraftingItem : Item
 
 public class Weapon : Item, IRenameable
 {
-    public void Rename()
+    public void Rename(string inRename)
     {
-
+        this.Name = inRename;
     }
 
     public Weapon(string inName)

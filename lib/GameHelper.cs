@@ -2,6 +2,10 @@ namespace lib;
 
 public class GameHelper : IHelper
 {
+
+    public static ConsoleColor defaultColor = ConsoleColor.DarkGreen;
+    public static ConsoleColor highlightColor = ConsoleColor.DarkRed;
+
     public static Game GetGame()
     {
         string[] options = new string[3] { "New Game", "Load Game", "Exit" };
@@ -35,8 +39,7 @@ public class GameHelper : IHelper
 
     private static int DisplayMenu(string logo, string[] options, string message = "")
     {
-        var defaultColor = ConsoleColor.DarkGreen;
-        var highlightColor = ConsoleColor.DarkRed;
+
         int cursorPos = 0;
         int maxPos = options.Length - 1;
 

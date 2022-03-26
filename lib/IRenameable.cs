@@ -2,5 +2,5 @@ namespace lib;
 
 public interface IRenameable
 {
-    void Rename();
+    void Rename(string inRename);
 }

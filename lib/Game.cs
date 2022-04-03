@@ -2,7 +2,7 @@ namespace lib;
 
 public class Game
 {
-    private Player player;
+    public Player player {get; set;}
 
     public Game(string inName)
     {
@@ -12,6 +12,11 @@ public class Game
     {
         this.player = new Player(inName, inventory);
     }
+    //* Only for JSON deserialization
+    public Game()
+    {
+
+    }
 
     public string GetPlayerName()
     {
@@ -20,7 +25,12 @@ public class Game
 
     public void Play()
     {
-        player.ShowInventory();
-    }
+        player.Inventory.Add(new Weapon("Weapon 1"));
+        player.Inventory.Add(new Weapon("Weapon 2"));
+        player.Inventory.Add(new CraftingItem("Craft"));
 
+        player.ShowInventory();
+        GameHelper.Save(this);
+        System.Environment.Exit(0);
+    }
 }

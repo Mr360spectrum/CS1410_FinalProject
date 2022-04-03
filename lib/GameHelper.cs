@@ -1,14 +1,18 @@
+using System.Text.Json;
+
 namespace lib;
 
-public class GameHelper : IHelper
-{
 
+public class GameHelper
+{
     public static ConsoleColor defaultColor = ConsoleColor.DarkGreen;
     public static ConsoleColor highlightColor = ConsoleColor.DarkRed;
 
+
+
     public static Game GetGame()
     {
-        string[] options = new string[3] { "New Game", "Load Game", "Exit" };
+        var options = new List<string>() { "New Game", "Load Game", "Exit" };
 
         while (true)
         {
@@ -37,11 +41,11 @@ public class GameHelper : IHelper
         }
     }
 
-    private static int DisplayMenu(string logo, string[] options, string message = "")
+    private static int DisplayMenu(string logo, List<string> options, string message = "")
     {
 
         int cursorPos = 0;
-        int maxPos = options.Length - 1;
+        int maxPos = options.Count - 1;
 
         while (true)
         {
@@ -102,14 +106,42 @@ public class GameHelper : IHelper
         }
     }
 
-    private static Game LoadGame()
+    public static Game LoadGame()
     {
         //!REMOVE
         var loadLogo = "LOAD";
-        var nameOptions = new string[]{"Bob", "Joe", "Phil", "Larry"};
-        var nameSelection = DisplayMenu(loadLogo, nameOptions, "Select a saved game.");
+        var fileOptions = FindSaves();
+        if (fileOptions.Count == 0)
+        {
+            Console.WriteLine("There are no saved games.");
+            Console.WriteLine("Press a key to create a new game.");
+            Console.ReadKey();
+            return GameHelper.StartNewGame();
+        }
+        var nameSelection = DisplayMenu(loadLogo, fileOptions, "Select a saved game.");
 
-        return new Game(nameOptions[nameSelection], new List<Item>{new Weapon("Weapon 1"), new Weapon("Weapon 2"), new CraftingItem("Craft 1")});
+        return DeserializeGame(fileOptions[nameSelection]);
+    }
+
+    public static Game DeserializeGame(string fileName)
+    {
+        var jsonString = File.ReadAllText(fileName);
+        var game = JsonSerializer.Deserialize<Game>(jsonString);
+        return game;
+    }
+
+    public static List<string> FindSaves()
+    {
+        string projectDirectory = Environment.CurrentDirectory;
+        var dir = new DirectoryInfo(projectDirectory);
+
+        List<string> files = new List<string>();
+        foreach (var file in dir.GetFiles("*.json"))
+        {
+            files.Add(file.Name);
+        }
+
+        return files;
     }
 
     private static Game StartNewGame()
@@ -122,8 +154,15 @@ public class GameHelper : IHelper
         return new Game(name);
     }
 
-    public void Save()
+    public static void Save(Game inGame)
     {
-        throw new NotImplementedException();
+        string fileName = $"{inGame.GetPlayerName()}.json";
+        string jsonString = JsonSerializer.Serialize<Game>(inGame);
+        File.WriteAllText(fileName, jsonString);
+    }
+
+    public static Game GenerateTestGame()
+    {
+        return new Game("Test", new List<Item>{new Weapon("Weapon 1"), new Weapon("Weapon 2"), new CraftingItem("Craft 1")});
     }
 }

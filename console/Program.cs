@@ -8,7 +8,9 @@ namespace console
         static void Main(string[] args)
         {
             var game = GameHelper.GetGame();
-            Console.WriteLine(game.GetPlayerName());
+
+            //!REMOVE
+            GameHelper.Save(game);
             while (true)
             {
                 game.Play();

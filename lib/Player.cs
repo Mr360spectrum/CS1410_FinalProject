@@ -6,18 +6,26 @@ public class Player
     private string name;
     public string Name
     {
-        get => this.name;
+        get => name;
         set 
         {
-            if (value == "" || value is null)
-            {
-                throw new EmptyNameException("Player name cannot be set as null or an empty string.");
-            }
+            // if (value == "" || value is null)
+            // {
+            //     throw new EmptyNameException("Player name cannot be set as null or an empty string.");
+            // }
             this.name = value;
         }
     }
 
     private List<Item> inventory;
+    public List<Item> Inventory
+    {
+        get => inventory;
+        set
+        {
+            this.inventory = value;
+        }
+    }
 
     public Player(string inName)
     {
@@ -28,6 +36,11 @@ public class Player
     {
         this.name = inName;
         inventory = inInventory;
+    }
+    //* Only for JSON deserialization
+    public Player()
+    {
+
     }
 
     public void ShowInventory()
@@ -55,7 +68,7 @@ public class Player
 
         if (input == "")
         {
-            System.Environment.Exit(0);
+            return;
         }
         int selection = int.Parse(input) - 1;
 

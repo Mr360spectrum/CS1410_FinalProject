@@ -25,10 +25,6 @@ public class Game
 
     public void Play()
     {
-        player.Inventory.Add(new Weapon("Weapon 1"));
-        player.Inventory.Add(new Weapon("Weapon 2"));
-        player.Inventory.Add(new CraftingItem("Craft"));
-
         player.ShowInventory();
         GameHelper.Save(this);
         System.Environment.Exit(0);

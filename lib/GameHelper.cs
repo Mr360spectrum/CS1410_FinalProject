@@ -108,9 +108,8 @@ public class GameHelper
 
     public static Game LoadGame()
     {
-        //!REMOVE
         var loadLogo = "LOAD";
-        var fileOptions = FindSaves();
+        var fileOptions = GetSaves();
         if (fileOptions.Count == 0)
         {
             Console.WriteLine("There are no saved games.");
@@ -130,18 +129,25 @@ public class GameHelper
         return game;
     }
 
-    public static List<string> FindSaves()
+    public static List<string> GetSaves()
     {
-        string projectDirectory = Environment.CurrentDirectory;
+        //!REMOVE
+        //TODO: Save individual JSON files for each type of item in inventory and save to a separate folder using the player's name
+        System.IO.Directory.CreateDirectory("../lib/saves");
+
+        string projectDirectory = System.IO.Directory.GetCurrentDirectory();
         var dir = new DirectoryInfo(projectDirectory);
 
-        List<string> files = new List<string>();
-        foreach (var file in dir.GetFiles("*.json"))
+        List<string> folders = new List<string>();
+        foreach (var folder in dir.GetDirectories())
         {
-            files.Add(file.Name);
+            if (folder.Name != "bin" && folder.Name != "obj")
+            {
+                folders.Add(folder.Name);
+            }
         }
 
-        return files;
+        return folders;
     }
 
     private static Game StartNewGame()

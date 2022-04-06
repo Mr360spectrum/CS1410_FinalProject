@@ -7,14 +7,16 @@ namespace console
     {
         static void Main(string[] args)
         {
-            var game = GameHelper.GetGame();
+            //var game = GameHelper.GetGame();
 
-            //!REMOVE
-            GameHelper.Save(game);
-            while (true)
-            {
-                game.Play();
-            }
+            GameHelper.GetSaves();
+
+        //     //!REMOVE
+        //     GameHelper.Save(game);
+        //     while (true)
+        //     {
+        //         game.Play();
+        //     }
         }
     }
 }

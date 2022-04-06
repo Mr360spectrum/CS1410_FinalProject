@@ -19,19 +19,13 @@ public abstract class Item
     public bool Equippable
     {
         get => equippable;
-        set
-        {
-            equippable = value;
-        }
+        set => equippable = value;
     }
     protected ItemType type;
     public ItemType Type
     {
         get => type;
-        protected set
-        {
-            type = value;
-        }
+        protected set => type = value;
     }
     public enum ItemType
     {

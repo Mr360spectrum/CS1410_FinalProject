@@ -21,10 +21,7 @@ public class Player
     public List<Item> Inventory
     {
         get => inventory;
-        set
-        {
-            this.inventory = value;
-        }
+        set => inventory = value;
     }
 
     public Player(string inName)

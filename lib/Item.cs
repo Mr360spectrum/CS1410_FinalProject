@@ -87,7 +87,7 @@ public class Armor : Item, IRenameable
     {
         this.Name = inName;
         this.Equippable = true;
-        this.type = ItemType.Weapon;
+        this.type = ItemType.Armor;
     }
     //* Only for JSON deserialization
     public Armor()

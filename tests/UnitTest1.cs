@@ -40,4 +40,15 @@ public class Tests
         Assert.Throws<EmptyNameException>(() => new Weapon(null));
         Assert.Throws<EmptyNameException>(() => new CraftingItem(""));
     }
+
+    [Test]
+    public void TestSplitInventory()
+    {
+        var game = GameHelper.GenerateTestGame();
+        var (weapons, armor, crafting) = GameHelper.SplitInventory(game.player.Inventory);
+        Assert.AreEqual("Weapon 1", weapons[0].Name);
+        Assert.AreEqual("Weapon 2", weapons[1].Name);
+        Assert.AreEqual("Craft 1", crafting[0].Name);
+        Assert.AreEqual("Armor 1", armor[0].Name);
+    }
 }

@@ -8,8 +8,6 @@ public class GameHelper
     public static ConsoleColor defaultColor = ConsoleColor.DarkGreen;
     public static ConsoleColor highlightColor = ConsoleColor.DarkRed;
 
-
-
     public static Game GetGame()
     {
         var options = new List<string>() { "New Game", "Load Game", "Exit" };
@@ -131,15 +129,13 @@ public class GameHelper
 
     public static List<string> GetSaves()
     {
-        //!REMOVE
         //TODO: Save individual JSON files for each type of item in inventory and save to a separate folder using the player's name
-        System.IO.Directory.CreateDirectory("../lib/saves");
 
         string projectDirectory = System.IO.Directory.GetCurrentDirectory();
-        var dir = new DirectoryInfo(projectDirectory);
+        var loadDir = new DirectoryInfo(projectDirectory);
 
         List<string> folders = new List<string>();
-        foreach (var folder in dir.GetDirectories())
+        foreach (var folder in loadDir.GetDirectories())
         {
             if (folder.Name != "bin" && folder.Name != "obj")
             {
@@ -148,6 +144,30 @@ public class GameHelper
         }
 
         return folders;
+    }
+
+    public static void Save(Game inGame)
+    {
+        string playerSavePath = $"../saves/{inGame.player.Inventory}";
+
+        try
+        {
+            if (!Directory.Exists(playerSavePath))
+            {
+                Directory.CreateDirectory(playerSavePath);
+            }
+            
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine("An error occurred while saving.");
+            Console.WriteLine(ex.Message);
+        }
+    }
+
+    public static (List<Weapon>, List<Armor>, List<CraftingItem>) SplitInventory(List<Item> inInv)
+    {
+        
     }
 
     private static Game StartNewGame()
@@ -160,15 +180,10 @@ public class GameHelper
         return new Game(name);
     }
 
-    public static void Save(Game inGame)
-    {
-        string fileName = $"{inGame.GetPlayerName()}.json";
-        string jsonString = JsonSerializer.Serialize<Game>(inGame);
-        File.WriteAllText(fileName, jsonString);
-    }
 
     public static Game GenerateTestGame()
     {
-        return new Game("Test", new List<Item>{new Weapon("Weapon 1"), new Weapon("Weapon 2"), new CraftingItem("Craft 1")});
+        return new Game("Test", new List<Item> { new Weapon("Weapon 1"), new Weapon("Weapon 2"), new Armor("Armor 1"), new CraftingItem("Craft 1") });
     }
 }
+

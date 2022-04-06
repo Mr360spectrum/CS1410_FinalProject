@@ -149,6 +149,7 @@ public class GameHelper
     public static void Save(Game inGame)
     {
         string playerSavePath = $"../saves/{inGame.player.Inventory}";
+        var (weaponsList, armorList, craftingList) = SplitInventory(inGame.player.Inventory);
 
         try
         {
@@ -167,7 +168,27 @@ public class GameHelper
 
     public static (List<Weapon>, List<Armor>, List<CraftingItem>) SplitInventory(List<Item> inInv)
     {
-        
+        var weaponsSaveList = new List<Weapon>();
+        var armorSaveList = new List<Armor>();
+        var craftingSaveList = new List<CraftingItem>();
+
+        foreach (var item in inInv)
+        {
+            switch (item.Type)
+            {
+                case Item.ItemType.Weapon:
+                    weaponsSaveList.Add((Weapon)item);
+                    break;
+                case Item.ItemType.Armor:
+                    armorSaveList.Add((Armor)item);
+                    break;
+                default:
+                    craftingSaveList.Add((CraftingItem)item);
+                    break;
+            }
+        }
+
+        return (weaponsSaveList, armorSaveList, craftingSaveList);
     }
 
     private static Game StartNewGame()

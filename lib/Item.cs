@@ -75,3 +75,23 @@ public class Weapon : Item, IRenameable
 
     }
 }
+
+public class Armor : Item, IRenameable
+{
+    public void Rename(string inRename)
+    {
+        this.name = inRename;
+    }
+
+    public Armor(string inName)
+    {
+        this.Name = inName;
+        this.Equippable = true;
+        this.type = ItemType.Weapon;
+    }
+    //* Only for JSON deserialization
+    public Armor()
+    {
+        
+    }
+}

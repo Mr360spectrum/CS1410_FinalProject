@@ -8,6 +8,10 @@ public abstract class Item
         get => name;
         set
         {
+            if (value == "" || value is null)
+            {
+                throw new EmptyNameException("Player name cannot be set as null or an empty string.");
+            }
             name = value;
         }
     }
@@ -24,7 +28,7 @@ public abstract class Item
     public ItemType Type
     {
         get => type;
-        set
+        protected set
         {
             type = value;
         }
@@ -41,9 +45,9 @@ public class CraftingItem : Item
 {
     public CraftingItem(string inName)
     {
-        this.name = inName;
-        this.equippable = false;
-        this.type = ItemType.Crafting;
+        this.Name = inName;
+        this.Equippable = false;
+        this.Type = ItemType.Crafting;
     }
     //* Only for JSON deserialization
     public CraftingItem()
@@ -61,9 +65,9 @@ public class Weapon : Item, IRenameable
 
     public Weapon(string inName)
     {
-        this.name = inName;
-        this.equippable = true;
-        this.type = ItemType.Weapon;
+        this.Name = inName;
+        this.Equippable = true;
+        this.Type = ItemType.Weapon;
     }
     //* Only for JSON deserialization
     public Weapon()

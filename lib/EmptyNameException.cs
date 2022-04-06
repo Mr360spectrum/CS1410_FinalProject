@@ -3,7 +3,7 @@ using System.Runtime.Serialization;
 namespace lib
 {
     [Serializable]
-    internal class EmptyNameException : Exception
+    public class EmptyNameException : Exception
     {
         public EmptyNameException()
         {

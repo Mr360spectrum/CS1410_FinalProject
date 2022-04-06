@@ -25,4 +25,19 @@ public class Tests
         var loadedGame = GameHelper.DeserializeGame("Test.json");
         Assert.AreEqual("Test", loadedGame.GetPlayerName());
     }
+
+    [Test]
+    public void TestEmptyPlayerName()
+    {
+        var game = new Game("Test");
+        Assert.Throws<EmptyNameException>(() => game.player.Name = "");
+    }
+
+    [Test]
+    public void TestEmptyItemName()
+    {
+        var game = new Game("Test");
+        Assert.Throws<EmptyNameException>(() => new Weapon(null));
+        Assert.Throws<EmptyNameException>(() => new CraftingItem(""));
+    }
 }

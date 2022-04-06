@@ -9,10 +9,10 @@ public class Player
         get => name;
         set 
         {
-            // if (value == "" || value is null)
-            // {
-            //     throw new EmptyNameException("Player name cannot be set as null or an empty string.");
-            // }
+            if (value == "" || value is null)
+            {
+                throw new EmptyNameException("Player name cannot be set as null or an empty string.");
+            }
             this.name = value;
         }
     }

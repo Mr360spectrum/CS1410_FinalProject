@@ -1,4 +1,5 @@
 using System.Text.Json;
+using System.IO;
 
 namespace lib;
 
@@ -149,7 +150,6 @@ public class GameHelper
     public static void Save(Game inGame)
     {
         string playerSavePath = $"../saves/{inGame.player.Inventory}";
-        var (weaponsList, armorList, craftingList) = SplitInventory(inGame.player.Inventory);
 
         try
         {
@@ -157,13 +157,52 @@ public class GameHelper
             {
                 Directory.CreateDirectory(playerSavePath);
             }
-            
+
         }
         catch (Exception ex)
         {
             Console.WriteLine("An error occurred while saving.");
             Console.WriteLine(ex.Message);
         }
+
+        //Save current game information
+        string gameJson = JsonSerializer.Serialize<Game>(inGame);
+        File.WriteAllText(Path.Combine(playerSavePath, "game.json"), gameJson);
+
+        //Save inventory items separately
+        var (weaponsJson, armorJson, craftingJson) = InventoryHelper.GetJson(inGame.player.Inventory);
+        File.WriteAllText(Path.Combine(playerSavePath, "weapons.json"), weaponsJson);
+        File.WriteAllText(Path.Combine(playerSavePath, "armor.json"), armorJson);
+        File.WriteAllText(Path.Combine(playerSavePath, "crafting.json"), craftingJson);
+    }
+
+    private static Game StartNewGame()
+    {
+        //!REMOVE
+        Console.Clear();
+        Console.WriteLine("Starting a new game...");
+        Console.WriteLine("What's your name?");
+        string name = Console.ReadLine();
+        return new Game(name);
+    }
+
+
+    public static Game GenerateTestGame()
+    {
+        return new Game("Test", new List<Item> { new Weapon("Weapon 1"), new Weapon("Weapon 2"), new Armor("Armor 1"), new CraftingItem("Craft 1") });
+    }
+}
+
+public class InventoryHelper
+{
+    public static (string, string, string) GetJson(List<Item> inInv)
+    {
+        var (weaponsList, armorList, craftingList) = InventoryHelper.SplitInventory(inInv);
+        string weaponsJsonStr = JsonSerializer.Serialize<List<Weapon>>(weaponsList);
+        string armorJsonStr = JsonSerializer.Serialize<List<Armor>>(armorList);
+        string craftingJsonStr = JsonSerializer.Serialize<List<CraftingItem>>(craftingList);
+
+        return (weaponsJsonStr, armorJsonStr, craftingJsonStr);
     }
 
     public static (List<Weapon>, List<Armor>, List<CraftingItem>) SplitInventory(List<Item> inInv)
@@ -190,21 +229,4 @@ public class GameHelper
 
         return (weaponsSaveList, armorSaveList, craftingSaveList);
     }
-
-    private static Game StartNewGame()
-    {
-        //!REMOVE
-        Console.Clear();
-        Console.WriteLine("Starting a new game...");
-        Console.WriteLine("What's your name?");
-        string name = Console.ReadLine();
-        return new Game(name);
-    }
-
-
-    public static Game GenerateTestGame()
-    {
-        return new Game("Test", new List<Item> { new Weapon("Weapon 1"), new Weapon("Weapon 2"), new Armor("Armor 1"), new CraftingItem("Craft 1") });
-    }
 }
-

@@ -1,5 +1,7 @@
 ﻿using System;
 using lib;
+using System.Text.Json;
+using System.IO;
 
 namespace console
 {
@@ -7,16 +9,7 @@ namespace console
     {
         static void Main(string[] args)
         {
-            //var game = GameHelper.GetGame();
 
-            GameHelper.GetSaves();
-
-        //     //!REMOVE
-        //     GameHelper.Save(game);
-        //     while (true)
-        //     {
-        //         game.Play();
-        //     }
         }
     }
 }

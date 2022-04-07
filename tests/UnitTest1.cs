@@ -45,7 +45,7 @@ public class Tests
     public void TestSplitInventory()
     {
         var game = GameHelper.GenerateTestGame();
-        var (weapons, armor, crafting) = GameHelper.SplitInventory(game.player.Inventory);
+        var (weapons, armor, crafting) = InventoryHelper.SplitInventory(game.player.Inventory);
         Assert.AreEqual("Weapon 1", weapons[0].Name);
         Assert.AreEqual("Weapon 2", weapons[1].Name);
         Assert.AreEqual("Craft 1", crafting[0].Name);

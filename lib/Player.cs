@@ -18,6 +18,7 @@ public class Player
     }
 
     private List<Item> inventory;
+    [System.Text.Json.Serialization.JsonIgnore] //Do not serialize Inventory directly from player
     public List<Item> Inventory
     {
         get => inventory;

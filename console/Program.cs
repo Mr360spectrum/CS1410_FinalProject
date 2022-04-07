@@ -9,7 +9,8 @@ namespace console
     {
         static void Main(string[] args)
         {
-
+            var game = GameHelper.GenerateTestGame();
+            GameHelper.Save(game);
         }
     }
 }

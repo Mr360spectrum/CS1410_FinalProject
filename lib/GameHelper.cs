@@ -149,7 +149,7 @@ public class GameHelper
 
     public static void Save(Game inGame)
     {
-        string playerSavePath = $"../saves/{inGame.player.Inventory}";
+        string playerSavePath = $"../saves/{inGame.player.Name}";
 
         try
         {
@@ -189,7 +189,7 @@ public class GameHelper
 
     public static Game GenerateTestGame()
     {
-        return new Game("Test", new List<Item> { new Weapon("Weapon 1"), new Weapon("Weapon 2"), new Armor("Armor 1"), new CraftingItem("Craft 1") });
+        return new Game("testgame", new List<Item> { new Weapon("Weapon 1"), new Weapon("Weapon 2"), new Armor("Armor 1"), new CraftingItem("Craft 1") });
     }
 }
 

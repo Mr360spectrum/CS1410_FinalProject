@@ -25,7 +25,7 @@ public abstract class Item
     public ItemType Type
     {
         get => type;
-        protected set => type = value;
+        set => type = value;
     }
     public enum ItemType
     {

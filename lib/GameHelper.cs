@@ -121,17 +121,37 @@ public class GameHelper
         return DeserializeGame(fileOptions[nameSelection]);
     }
 
-    public static Game DeserializeGame(string fileName)
+    public static Game DeserializeGame(string saveName)
     {
-        var jsonString = File.ReadAllText(fileName);
-        var game = JsonSerializer.Deserialize<Game>(jsonString);
-        return game;
+        string playerDataStr = File.ReadAllText($"../saves/{saveName}/game.json");
+        string weaponsDataStr = File.ReadAllText($"../saves/{saveName}/weapons.json");
+        string armorDataStr = File.ReadAllText($"../saves/{saveName}/armor.json");
+        string craftingDataStr = File.ReadAllText($"../saves/{saveName}/crafting.json");
+
+        var weaponsList = JsonSerializer.Deserialize<List<Weapon>>(weaponsDataStr);
+        var armorList = JsonSerializer.Deserialize<List<Armor>>(armorDataStr);
+        var craftingList = JsonSerializer.Deserialize<List<CraftingItem>>(craftingDataStr);
+
+        List<Item> items = new List<Item>();
+        foreach (var w in weaponsList)
+        {
+            items.Add(w);
+        }
+        foreach (var a in armorList)
+        {
+            items.Add(a);
+        }
+        foreach (var c in craftingList)
+        {
+            items.Add(c);
+        }
+
+        var game = JsonSerializer.Deserialize<Game>(playerDataStr);
+        return new Game(game.player.Name, items);
     }
 
     public static List<string> GetSaves()
     {
-        //TODO: Save individual JSON files for each type of item in inventory and save to a separate folder using the player's name
-
         string projectDirectory = System.IO.Directory.GetCurrentDirectory();
         var loadDir = new DirectoryInfo(projectDirectory);
 

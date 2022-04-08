@@ -18,15 +18,6 @@ public class Tests
     }
 
     [Test]
-    public void TestSaveAndLoad()
-    {
-        var game = new Game("Test");
-        GameHelper.Save(game);
-        var loadedGame = GameHelper.DeserializeGame("Test.json");
-        Assert.AreEqual("Test", loadedGame.GetPlayerName());
-    }
-
-    [Test]
     public void TestEmptyPlayerName()
     {
         var game = new Game("Test");

@@ -190,6 +190,10 @@ public class GameHelper
         File.WriteAllText(Path.Combine(playerSavePath, "weapons.json"), weaponsJson);
         File.WriteAllText(Path.Combine(playerSavePath, "armor.json"), armorJson);
         File.WriteAllText(Path.Combine(playerSavePath, "crafting.json"), craftingJson);
+
+        Console.WriteLine("Game saved.");
+        Console.WriteLine("Press a key to continue.");
+        Console.ReadKey();
     }
 
     private static Game StartNewGame()

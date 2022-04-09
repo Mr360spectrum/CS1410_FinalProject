@@ -17,7 +17,7 @@ public class Player
         }
     }
 
-    private List<Item> inventory;
+    private List<Item> inventory = new List<Item>();
     [System.Text.Json.Serialization.JsonIgnore] //Do not serialize Inventory directly from player
     public List<Item> Inventory
     {
@@ -83,5 +83,10 @@ public class Player
             Console.WriteLine("That item cannot be renamed!");
             Console.ForegroundColor = GameHelper.defaultColor;
         }
+    }
+
+    public void GainItem(Item item)
+    {
+        this.inventory.Add(item);
     }
 }

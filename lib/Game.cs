@@ -25,6 +25,15 @@ public class Game
 
     public void Play()
     {
+        Console.Clear();
+        var sword = new Weapon("Sword of Oldness");
+
+        Console.WriteLine("You found an old sword.");
+        Console.WriteLine("Press a key to pick it up.");
+        Console.ReadKey(true);
+        Console.WriteLine($"You picked up '{sword.Name}'");
+        player.GainItem(sword);
+
         player.ShowInventory();
         GameHelper.Save(this);
         System.Environment.Exit(0);

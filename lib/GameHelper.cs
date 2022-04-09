@@ -42,7 +42,6 @@ public class GameHelper
 
     private static int DisplayMenu(string logo, List<string> options, string message = "")
     {
-
         int cursorPos = 0;
         int maxPos = options.Count - 1;
 
@@ -111,6 +110,7 @@ public class GameHelper
         var fileOptions = GetSaves();
         if (fileOptions.Count == 0)
         {
+            Console.Clear();
             Console.WriteLine("There are no saved games.");
             Console.WriteLine("Press a key to create a new game.");
             Console.ReadKey();
@@ -152,19 +152,15 @@ public class GameHelper
 
     public static List<string> GetSaves()
     {
-        string projectDirectory = System.IO.Directory.GetCurrentDirectory();
-        var loadDir = new DirectoryInfo(projectDirectory);
-
-        List<string> folders = new List<string>();
-        foreach (var folder in loadDir.GetDirectories())
+        var savesArray = System.IO.Directory.GetDirectories("../saves");
+        var savesList = new List<string>();
+        foreach (var save in savesArray)
         {
-            if (folder.Name != "bin" && folder.Name != "obj")
-            {
-                folders.Add(folder.Name);
-            }
+            //Remove initial part of path
+            savesList.Add(save.Remove(0, 9));
         }
 
-        return folders;
+        return savesList;
     }
 
     public static void Save(Game inGame)
@@ -205,7 +201,6 @@ public class GameHelper
         string name = Console.ReadLine();
         return new Game(name);
     }
-
 
     public static Game GenerateTestGame()
     {

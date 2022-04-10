@@ -135,15 +135,15 @@ public class GameHelper
         List<Item> items = new List<Item>();
         foreach (var w in weaponsList)
         {
-            items.Add(w);
+            items.Add(w as Item);
         }
         foreach (var a in armorList)
         {
-            items.Add(a);
+            items.Add(a as Armor);
         }
         foreach (var c in craftingList)
         {
-            items.Add(c);
+            items.Add(c as CraftingItem);
         }
 
         var game = JsonSerializer.Deserialize<Game>(playerDataStr);
@@ -208,6 +208,13 @@ public class GameHelper
 
     public static Game GenerateTestGame()
     {
-        return new Game("testgame", new List<Item> { new Weapon("Weapon 1", 2), new Weapon("Weapon 2", 4), new Armor("Armor 1", 3), new CraftingItem("Craft 1") });
+        return new Game("testgame", new List<Item> { new Weapon("Weapon 1", 5), new Weapon("Weapon 2", 4), new Armor("Armor 1", 3), new CraftingItem("Craft 1") });
+        var game = new Game("testgame");
+        game.player.GainItem(new Weapon("Weapon 1", 5));
+        game.player.GainItem(new Weapon("Weapon 2", 4));
+        game.player.GainItem(new Armor("Armor 1", 3));
+        game.player.GainItem(new CraftingItem("Craft 1"));
+
+        return game;
     }
 }

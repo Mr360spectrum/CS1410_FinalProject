@@ -25,13 +25,13 @@ public class InventoryHelper
             switch (item.Type)
             {
                 case Item.ItemType.Weapon:
-                    weaponsSaveList.Add((Weapon)item);
+                    weaponsSaveList.Add(item as Weapon);
                     break;
                 case Item.ItemType.Armor:
-                    armorSaveList.Add((Armor)item);
+                    armorSaveList.Add(item as Armor);
                     break;
                 default:
-                    craftingSaveList.Add((CraftingItem)item);
+                    craftingSaveList.Add(item as CraftingItem);
                     break;
             }
         }

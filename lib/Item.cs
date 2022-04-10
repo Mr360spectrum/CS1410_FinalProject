@@ -52,7 +52,8 @@ public class CraftingItem : Item
 
 public class Weapon : Item, IRenameable
 {
-    public int DamageModifier {get; protected set; }
+    private int damageModifier;
+    public int DamageModifier {get => damageModifier; set => damageModifier = value; }
 
     public void Rename(string inRename)
     {
@@ -75,7 +76,8 @@ public class Weapon : Item, IRenameable
 
 public class Armor : Item, IRenameable
 {
-    public int DefenseModifier {get; protected set; }
+    private int defenseModifier;
+    public int DefenseModifier {get => defenseModifier; set => defenseModifier = value; }
 
     public void Rename(string inRename)
     {

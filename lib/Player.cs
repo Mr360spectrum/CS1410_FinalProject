@@ -156,7 +156,6 @@ public class Player : Entity
             Console.WriteLine("Press a key to continue.");
             Console.ReadKey();
         }
-
     }
 
     public void GainItem(Item item)

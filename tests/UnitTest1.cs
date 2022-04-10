@@ -28,7 +28,7 @@ public class Tests
     public void TestEmptyItemName()
     {
         var game = new Game("Test");
-        Assert.Throws<EmptyNameException>(() => new Weapon(null));
+        Assert.Throws<EmptyNameException>(() => new Weapon(null, 0));
         Assert.Throws<EmptyNameException>(() => new CraftingItem(""));
     }
 
@@ -49,5 +49,14 @@ public class Tests
         var game = GameHelper.GenerateTestGame();
         game.player.TakeDamage(3);
         Assert.AreEqual(97, game.player.Health);
+    }
+
+    [Test]
+    public void TestAttack()
+    {
+        var game = GameHelper.GenerateTestGame();
+        var wolf = new Enemy(Entity.EntityType.Wolf);
+        game.player.Attack(wolf);
+        Assert.AreEqual(6.5, wolf.Health);
     }
 }

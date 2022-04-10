@@ -1,7 +1,7 @@
 namespace lib;
 using System.Collections.Generic;
 
-public class Player
+public class Player : Entity
 {
     private string name;
     public string Name
@@ -29,16 +29,22 @@ public class Player
     {
         this.name = inName;
         this.inventory = new List<Item>();
+        Health = 100;
     }
     public Player(string inName, List<Item> inInventory)
     {
         this.name = inName;
         inventory = inInventory;
+        Health = 100;
     }
     //* Only for JSON deserialization
     public Player()
     {
-
+        //Reset health to 100 if 0 or not set
+        if (Health == 0)
+        {
+            Health = 100;
+        }
     }
 
     public void ShowInventory()

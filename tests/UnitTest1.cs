@@ -48,6 +48,6 @@ public class Tests
     {
         var game = GameHelper.GenerateTestGame();
         game.player.TakeDamage(3);
-        Assert.AreEqual(3, game.player.Health);
+        Assert.AreEqual(97, game.player.Health);
     }
 }

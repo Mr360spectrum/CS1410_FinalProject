@@ -2,7 +2,7 @@ namespace lib;
 
 public class Game
 {
-    public Player player {get; set;}
+    public Player player { get; set; }
 
     public Game(string inName)
     {
@@ -34,8 +34,22 @@ public class Game
         Console.WriteLine($"You picked up '{sword.Name}'");
         player.GainItem(sword);
 
-        player.ShowInventory();
+
+            player.ShowInventory();
+            GameHelper.Save(this);
+        
+
+        var enemy = new Enemy(Entity.EntityType.Knight);
+        Console.WriteLine("A knight approaches!");
+        while (enemy.Health > 0)
+        {
+            Console.WriteLine($"Knight health: {enemy.Health}");
+            Console.WriteLine("Press a key to attack!");
+            Console.ReadKey();
+            player.Attack(enemy);
+        }
+        Console.WriteLine("Knight defeated!");
+        
         GameHelper.Save(this);
-        System.Environment.Exit(0);
     }
 }

@@ -7,7 +7,7 @@ public class Player : Entity
     public string Name
     {
         get => name;
-        set 
+        set
         {
             if (value == "" || value is null)
             {
@@ -25,7 +25,7 @@ public class Player : Entity
         set => inventory = value;
     }
 
-    public Weapon EquippedWeapon {get; protected set;}
+    public Weapon EquippedWeapon { get; protected set; }
 
     public Player(string inName)
     {
@@ -70,46 +70,93 @@ public class Player : Entity
 
     public void ShowInventory()
     {
-        //!REMOVE
-        if (this.inventory.Count == 0)
+        while (true)
         {
-            Console.WriteLine("The inventory is empty.");
-            Console.WriteLine("Press any key to exit.");
+            //!REMOVE
+            Console.Clear();
+            if (this.inventory.Count == 0)
+            {
+                Console.WriteLine("The inventory is empty.");
+                Console.WriteLine("Press any key to exit.");
+                Console.ReadKey();
+                return;
+            }
+
+            int i = 0;
+            Console.WriteLine("");
+            foreach (var item in this.inventory)
+            {
+                Console.WriteLine((i + 1) + ". " + item.Name);
+                i++;
+            }
+
+            Console.WriteLine("Enter an empty string to exit.");
+            Console.WriteLine("Select which item you'd like to view options for: ");
+            string input = Console.ReadLine();
+
+            if (input == "")
+            {
+                //!REMOVE
+                return;
+            }
+            int selection = int.Parse(input) - 1;
+
+            // try
+            // {
+            //     var renameableItem = inventory[selection] as IRenameable;
+            //     Console.WriteLine("What would you like to rename the item to?");
+            //     string rename = Console.ReadLine();
+            //     renameableItem.Rename(rename);
+            // }
+            // catch
+            // {
+            //     Console.ForegroundColor = GameHelper.highlightColor;
+            //     Console.WriteLine("That item cannot be renamed!");
+            //     Console.ForegroundColor = GameHelper.defaultColor;
+            // }
+
+            var selectedItem = inventory[selection];
+            Console.Clear();
+            if (selectedItem.Type == Item.ItemType.Crafting)
+            {
+                Console.WriteLine("There are no options available.");
+            }
+            else if (selectedItem.Type == Item.ItemType.Armor)
+            {
+                Console.WriteLine("Select an option:");
+                Console.WriteLine("1. Rename");
+                var option = Console.ReadLine();
+                switch (option)
+                {
+                    case "1":
+                        Console.WriteLine("What would you like to rename the item to?");
+                        (selectedItem as Armor).Rename(Console.ReadLine());
+                        break;
+                }
+            }
+            else if (selectedItem.Type == Item.ItemType.Weapon)
+            {
+                Console.WriteLine("Select an option:");
+                Console.WriteLine("1. Rename");
+                Console.WriteLine("2. Equip");
+                var option = Console.ReadLine();
+                switch (option)
+                {
+                    case "1":
+                        Console.WriteLine("What would you like to rename the item to?");
+                        (selectedItem as Weapon).Rename(Console.ReadLine());
+                        break;
+                    case "2":
+                        EquipWeapon(selectedItem as Weapon);
+                        Console.WriteLine($"{selectedItem.Name} equipped.");
+                        break;
+                }
+            }
+
+            Console.WriteLine("Press a key to continue.");
             Console.ReadKey();
-            System.Environment.Exit(0);
         }
 
-        int i = 0;
-        Console.WriteLine("");
-        foreach (var item in this.inventory)
-        {
-            Console.WriteLine((i+1) + ". " + item.Name);
-            i++;
-        }
-
-        Console.WriteLine("Enter an empty string to exit.");
-        Console.WriteLine("Select which item you'd like to rename: ");
-        string input = Console.ReadLine();
-
-        if (input == "")
-        {
-            return;
-        }
-        int selection = int.Parse(input) - 1;
-
-        try
-        {
-            var renameableItem = inventory[selection] as IRenameable;
-            Console.WriteLine("What would you like to rename the item to?");
-            string rename = Console.ReadLine();
-            renameableItem.Rename(rename);
-        }
-        catch
-        {
-            Console.ForegroundColor = GameHelper.highlightColor;
-            Console.WriteLine("That item cannot be renamed!");
-            Console.ForegroundColor = GameHelper.defaultColor;
-        }
     }
 
     public void GainItem(Item item)

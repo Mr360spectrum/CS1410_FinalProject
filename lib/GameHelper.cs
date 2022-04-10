@@ -208,6 +208,6 @@ public class GameHelper
 
     public static Game GenerateTestGame()
     {
-        return new Game("testgame", new List<Item> { new Weapon("Weapon 1"), new Weapon("Weapon 2"), new Armor("Armor 1"), new CraftingItem("Craft 1") });
+        return new Game("testgame", new List<Item> { new Weapon("Weapon 1", 2), new Weapon("Weapon 2", 4), new Armor("Armor 1", 3), new CraftingItem("Craft 1") });
     }
 }

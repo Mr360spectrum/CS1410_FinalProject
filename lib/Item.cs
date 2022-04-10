@@ -52,16 +52,19 @@ public class CraftingItem : Item
 
 public class Weapon : Item, IRenameable
 {
+    public int DamageModifier {get; protected set; }
+
     public void Rename(string inRename)
     {
         this.name = inRename;
     }
 
-    public Weapon(string inName)
+    public Weapon(string inName, int inDamage)
     {
         this.Name = inName;
         this.Equippable = true;
         this.Type = ItemType.Weapon;
+        this.DamageModifier = inDamage;
     }
     //* Only for JSON deserialization
     public Weapon()
@@ -72,16 +75,19 @@ public class Weapon : Item, IRenameable
 
 public class Armor : Item, IRenameable
 {
+    public int DefenseModifier {get; protected set; }
+
     public void Rename(string inRename)
     {
         this.name = inRename;
     }
 
-    public Armor(string inName)
+    public Armor(string inName, int inDefense)
     {
         this.Name = inName;
         this.Equippable = true;
         this.type = ItemType.Armor;
+        this.DefenseModifier = inDefense;
     }
     //* Only for JSON deserialization
     public Armor()

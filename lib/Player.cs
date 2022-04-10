@@ -47,6 +47,11 @@ public class Player : Entity
         }
     }
 
+    public void Attack(Enemy inEnemy)
+    {
+        inEnemy.TakeDamage(4);
+    }
+
     public void ShowInventory()
     {
         //!REMOVE

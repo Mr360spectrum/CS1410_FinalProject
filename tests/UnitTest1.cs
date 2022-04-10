@@ -59,4 +59,14 @@ public class Tests
         game.player.Attack(wolf);
         Assert.AreEqual(6, wolf.Health);
     }
+
+    [Test]
+    public void TestEquipWeapon()
+    {
+        var game = GameHelper.GenerateTestGame();
+        var sword = new Weapon("sword", 5);
+        game.player.EquipWeapon(sword);
+        Assert.AreEqual("sword", game.player.EquippedWeapon.Name);
+        Assert.AreEqual(5, game.player.EquippedWeapon.DamageModifier);
+    }
 }

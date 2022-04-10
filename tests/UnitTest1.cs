@@ -42,4 +42,12 @@ public class Tests
         Assert.AreEqual("Craft 1", crafting[0].Name);
         Assert.AreEqual("Armor 1", armor[0].Name);
     }
+
+    [Test]
+    public void TestTakeDamage()
+    {
+        var game = GameHelper.GenerateTestGame();
+        game.player.TakeDamage(3);
+        Assert.AreEqual(3, game.player.Health);
+    }
 }

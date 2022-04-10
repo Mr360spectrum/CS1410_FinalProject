@@ -27,7 +27,7 @@ public class Enemy : Entity
         {
             case EntityType.Knight:
                 Health = 20;
-                Defense = 20;
+                Defense = 10;
                 break;
             case EntityType.Wolf:
                 Health = 10;

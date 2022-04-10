@@ -57,7 +57,7 @@ public class Tests
         var game = GameHelper.GenerateTestGame();
         var wolf = new Enemy(Entity.EntityType.Wolf);
         game.player.Attack(wolf);
-        Assert.AreEqual(6, wolf.Health);
+        Assert.AreEqual(9, wolf.Health);
     }
 
     [Test]

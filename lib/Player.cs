@@ -25,6 +25,8 @@ public class Player : Entity
         set => inventory = value;
     }
 
+    public Weapon EquippedWeapon {get; protected set;}
+
     public Player(string inName)
     {
         this.name = inName;
@@ -49,7 +51,21 @@ public class Player : Entity
 
     public void Attack(Enemy inEnemy)
     {
-        inEnemy.TakeDamage(4);
+        if (EquippedWeapon != null)
+        {
+            inEnemy.TakeDamage(EquippedWeapon.DamageModifier);
+        }
+        else
+        {
+            Console.WriteLine("There is no weapon equipped!");
+            Console.WriteLine("Hand-to-hand combat is fine, I guess.");
+            inEnemy.TakeDamage(1);
+        }
+    }
+
+    public void EquipWeapon(Weapon inWeapon)
+    {
+        this.EquippedWeapon = inWeapon;
     }
 
     public void ShowInventory()

@@ -33,12 +33,14 @@ public class Player : Entity
         this.name = inName;
         this.inventory = new List<Item>();
         Health = 100;
+        Defense = 0;
     }
     public Player(string inName, List<Item> inInventory)
     {
         this.name = inName;
         inventory = inInventory;
         Health = 100;
+        Defense = 0;
     }
     //* Only for JSON deserialization
     public Player()
@@ -64,6 +66,27 @@ public class Player : Entity
         }
     }
 
+    public override void TakeDamage(double amount)
+    {
+        if (EquippedWeapon != null)
+        {
+            var rand = new Random();
+            var randNum = rand.Next(101);
+            if (randNum < this.EquippedArmor.DodgeChance)
+            {
+                return;
+            }
+            else
+            {
+                base.TakeDamage(amount);
+            }
+        }
+        else
+        {
+            base.TakeDamage(amount);
+        }
+    }
+
     public void EquipWeapon(Weapon inWeapon)
     {
         this.EquippedWeapon = inWeapon;
@@ -72,6 +95,8 @@ public class Player : Entity
     public void EquipArmor(Armor inArmor)
     {
         this.EquippedArmor = inArmor;
+        this.Defense = EquippedArmor.DefenseModifier;
+
     }
 
     public void ShowInventory()
@@ -106,20 +131,6 @@ public class Player : Entity
                 return;
             }
             int selection = int.Parse(input) - 1;
-
-            // try
-            // {
-            //     var renameableItem = inventory[selection] as IRenameable;
-            //     Console.WriteLine("What would you like to rename the item to?");
-            //     string rename = Console.ReadLine();
-            //     renameableItem.Rename(rename);
-            // }
-            // catch
-            // {
-            //     Console.ForegroundColor = GameHelper.highlightColor;
-            //     Console.WriteLine("That item cannot be renamed!");
-            //     Console.ForegroundColor = GameHelper.defaultColor;
-            // }
 
             var selectedItem = inventory[selection];
             Console.Clear();

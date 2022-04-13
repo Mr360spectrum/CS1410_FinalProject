@@ -12,7 +12,7 @@ public abstract class Entity
         Wolf
     }
 
-    public void TakeDamage(double amount)
+    public virtual void TakeDamage(double amount)
     {
         this.Health = (int)Math.Floor(Health - (amount - (Defense * 0.1)));
     }

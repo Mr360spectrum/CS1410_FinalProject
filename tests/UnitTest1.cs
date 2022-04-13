@@ -81,4 +81,28 @@ public class Tests
         Assert.AreEqual(4, w3.CriticalChance);
         Assert.AreEqual(4, w3.CriticalModifier);
     }
+
+    [Test]
+    public void TestCombineWeaponsWithCriticalChanceSelected()
+    {
+        var w1 = new Weapon("sword", 7, 9, 1);
+        var w2 = new Weapon("spear", 3, 4, 5);
+        var w3 = InventoryHelper.CombineWeapons(w1, w2, Item.WeaponAttributes.CriticalChance);
+        Assert.AreEqual("sword", w3.Name);
+        Assert.AreEqual(5, w3.DamageModifier);
+        Assert.AreEqual(9, w3.CriticalChance);
+        Assert.AreEqual(3, w3.CriticalModifier);
+    }
+
+    [Test]
+    public void TestCombineWeaponsWithCriticalModifierSelected()
+    {
+        var w1 = new Weapon("sword", 10, 10, 6);
+        var w2 = new Weapon("spear", 3, 4, 5);
+        var w3 = InventoryHelper.CombineWeapons(w1, w2, Item.WeaponAttributes.CriticalModifier);
+        Assert.AreEqual("sword", w3.Name);
+        Assert.AreEqual(6, w3.DamageModifier);
+        Assert.AreEqual(7, w3.CriticalChance);
+        Assert.AreEqual(6, w3.CriticalModifier);
+    }
 }

@@ -105,4 +105,16 @@ public class Tests
         Assert.AreEqual(7, w3.CriticalChance);
         Assert.AreEqual(6, w3.CriticalModifier);
     }
+
+    [Test]
+    public void TestCombineArmorWithDefenseSelected()
+    {
+        var a1 = new Armor("a1", 10, 5, 2);
+        var a2 = new Armor("a2", 2, 7, 10);
+        var a3 = InventoryHelper.CombineArmor(a1, a2, Item.ArmorAttributes.Defense);
+        Assert.AreEqual("a1", a3.Name);
+        Assert.AreEqual(10, a3.DefenseModifier);
+        Assert.AreEqual(6, a3.DodgeChance);
+        Assert.AreEqual(6, a3.AttackBonus);
+    }
 }

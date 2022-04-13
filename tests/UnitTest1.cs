@@ -28,7 +28,7 @@ public class Tests
     public void TestEmptyItemName()
     {
         var game = new Game("Test");
-        Assert.Throws<EmptyNameException>(() => new Weapon(null, 0));
+        Assert.Throws<EmptyNameException>(() => new Weapon(null, 0, 0, 0));
         Assert.Throws<EmptyNameException>(() => new CraftingItem(""));
     }
 
@@ -64,9 +64,21 @@ public class Tests
     public void TestEquipWeapon()
     {
         var game = GameHelper.GenerateTestGame();
-        var sword = new Weapon("sword", 5);
+        var sword = new Weapon("sword", 5, 1, 1);
         game.player.EquipWeapon(sword);
         Assert.AreEqual("sword", game.player.EquippedWeapon.Name);
         Assert.AreEqual(5, game.player.EquippedWeapon.DamageModifier);
+    }
+
+    [Test]
+    public void TestCombineWeaponsWithAttackSelected()
+    {
+        var w1 = new Weapon("sword", 5, 4, 3);
+        var w2 = new Weapon("spear", 3, 4, 5);
+        var w3 = InventoryHelper.CombineWeapons(w1, w2, Item.WeaponAttributes.Attack);
+        Assert.AreEqual("sword", w3.Name);
+        Assert.AreEqual(5, w3.DamageModifier);
+        Assert.AreEqual(4, w3.CriticalChance);
+        Assert.AreEqual(4, w3.CriticalModifier);
     }
 }

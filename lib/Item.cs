@@ -33,6 +33,12 @@ public abstract class Item
         Weapon,
         Armor
     }
+    public enum WeaponAttributes
+    {
+        Attack,
+        CriticalChance,
+        CriticalModifier
+    }
 }
 
 public class CraftingItem : Item
@@ -46,26 +52,32 @@ public class CraftingItem : Item
     //* Only for JSON deserialization
     public CraftingItem()
     {
-        
+
     }
 }
 
 public class Weapon : Item, IRenameable
 {
     private int damageModifier;
-    public int DamageModifier {get => damageModifier; set => damageModifier = value; }
+    public int DamageModifier { get => damageModifier; set => damageModifier = value; }
+    private int criticalChance;
+    public int CriticalChance { get => criticalChance; set => criticalChance = value; }
+    private int criticalModifier;
+    public int CriticalModifier { get => criticalModifier; set => criticalModifier = value; }
 
     public void Rename(string inRename)
     {
         this.name = inRename;
     }
 
-    public Weapon(string inName, int inDamage)
+    public Weapon(string inName, int inDamage, int inCriticalChance, int inCriticalModifier)
     {
         this.Name = inName;
         this.Equippable = true;
         this.Type = ItemType.Weapon;
         this.DamageModifier = inDamage;
+        this.CriticalChance = inCriticalChance;
+        this.CriticalModifier = inCriticalModifier;
     }
     //* Only for JSON deserialization
     public Weapon()
@@ -77,7 +89,7 @@ public class Weapon : Item, IRenameable
 public class Armor : Item, IRenameable
 {
     private int defenseModifier;
-    public int DefenseModifier {get => defenseModifier; set => defenseModifier = value; }
+    public int DefenseModifier { get => defenseModifier; set => defenseModifier = value; }
 
     public void Rename(string inRename)
     {
@@ -94,6 +106,6 @@ public class Armor : Item, IRenameable
     //* Only for JSON deserialization
     public Armor()
     {
-        
+
     }
 }

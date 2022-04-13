@@ -38,4 +38,36 @@ public class InventoryHelper
 
         return (weaponsSaveList, armorSaveList, craftingSaveList);
     }
+
+    public static Weapon CombineWeapons(Weapon weapon1, Weapon weapon2, Item.WeaponAttributes selectedAttr)
+    {
+        int newDamageModifier;
+        int newCriticalChance;
+        int newCriticalModifier;
+
+        switch (selectedAttr)
+        {
+            case Item.WeaponAttributes.Attack:
+                newDamageModifier = weapon1.DamageModifier > weapon2.DamageModifier ? weapon1.DamageModifier : weapon2.DamageModifier;
+                newCriticalChance = (weapon1.CriticalChance + weapon2.CriticalChance) / 2;
+                newCriticalModifier = (weapon1.CriticalModifier + weapon2.CriticalModifier) / 2;
+
+                return new Weapon(weapon1.Name, newDamageModifier, newCriticalChance, newCriticalModifier);
+            case Item.WeaponAttributes.CriticalChance:
+                newDamageModifier = (weapon1.DamageModifier + weapon2.DamageModifier) / 2;
+                newCriticalChance = weapon1.CriticalChance > weapon2.CriticalChance ? weapon1.CriticalChance : weapon2.CriticalChance;
+                newCriticalModifier = (weapon1.CriticalModifier + weapon2.CriticalModifier) / 2;
+
+                return new Weapon(weapon1.Name, newDamageModifier, newCriticalChance, newCriticalModifier);
+            case Item.WeaponAttributes.CriticalModifier:
+                newDamageModifier = (weapon1.DamageModifier + weapon2.DamageModifier) / 2;
+                newCriticalChance = (weapon1.CriticalChance + weapon2.CriticalChance) / 2;
+                newCriticalModifier = weapon1.CriticalModifier > weapon2.CriticalModifier ? weapon1.CriticalModifier : weapon2.CriticalModifier;
+
+                return new Weapon(weapon1.Name, newDamageModifier, newCriticalChance, newCriticalModifier);
+            default:
+                //This should never be called because the only possible options for selectedAttr are already accounted for
+                return new Weapon("Impossible weapon", 0, 0, 0);
+        }
+    }
 }

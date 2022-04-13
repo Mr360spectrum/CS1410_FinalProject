@@ -26,7 +26,7 @@ public class Game
     public void Play()
     {
         Console.Clear();
-        var sword = new Weapon("Sword of Oldness", 3);
+        var sword = new Weapon("Sword of Oldness", 3, 1, 1);
 
         Console.WriteLine("You found an old sword.");
         Console.WriteLine("Press a key to pick it up.");

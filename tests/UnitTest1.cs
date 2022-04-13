@@ -151,4 +151,15 @@ public class Tests
         Assert.AreEqual(3, a3.DodgeChance);
         Assert.AreEqual(6, a3.AttackBonus);
     }
+
+    [Test]
+    public void TestPlayerTakeDamageWithArmor()
+    {
+        var game = new Game("test");
+        var armor = new Armor("armor", 10, 0, 0);
+        game.player.GainItem(armor);
+        game.player.EquipArmor(armor);
+        game.player.TakeDamage(3);
+        Assert.AreEqual(98, game.player.Health);
+    }
 }

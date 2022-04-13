@@ -70,4 +70,36 @@ public class InventoryHelper
                 return new Weapon("Impossible weapon", 0, 0, 0);
         }
     }
+
+    public static Armor CombineArmor(Armor armor1, Armor armor2, Item.ArmorAttributes selectedAttr)
+    {
+        int newDefenseModifier;
+        int newDodgeChance;
+        int newAttackBonus;
+
+        switch (selectedAttr)
+        {
+            case Item.ArmorAttributes.Defense:
+                newDefenseModifier = armor1.DefenseModifier > armor2.DefenseModifier ? armor1.DefenseModifier : armor2.DefenseModifier;
+                newDodgeChance = (armor1.DodgeChance + armor2.DodgeChance) / 2;
+                newAttackBonus = (armor1.AttackBonus + armor2.AttackBonus) / 2;
+
+                return new Armor(armor1.Name, newDefenseModifier, newDodgeChance, newAttackBonus);
+            case Item.ArmorAttributes.DodgeChance:
+                newDefenseModifier = (armor1.DefenseModifier + armor2.DefenseModifier) / 2;
+                newDodgeChance = armor1.DodgeChance > armor2.DodgeChance ? armor1.DodgeChance : armor2.DodgeChance;
+                newAttackBonus = (armor1.AttackBonus + armor2.AttackBonus) / 2;
+
+                return new Armor(armor1.Name, newDefenseModifier, newDodgeChance, newAttackBonus);
+            case Item.ArmorAttributes.AttackBonus:
+                newDefenseModifier = (armor1.DefenseModifier + armor2.DefenseModifier) / 2;
+                newDodgeChance = (armor1.DodgeChance + armor2.DodgeChance) / 2;
+                newAttackBonus = armor1.AttackBonus > armor2.AttackBonus ? armor1.AttackBonus : armor2.AttackBonus;
+
+                return new Armor(armor1.Name, newDefenseModifier, newDodgeChance, newAttackBonus);
+            default:
+                //This should never be called because the only possible options for selectedAttr are already accounted for
+                return new Armor("Impossible armor", 0, 0, 0);
+        }
+    }
 }

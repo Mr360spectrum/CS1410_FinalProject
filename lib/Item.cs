@@ -15,29 +15,40 @@ public abstract class Item
             name = value;
         }
     }
+
     protected bool equippable;
     public bool Equippable
     {
         get => equippable;
         set => equippable = value;
     }
+
     protected ItemType type;
     public ItemType Type
     {
         get => type;
         set => type = value;
     }
+
     public enum ItemType
     {
         Crafting,
         Weapon,
         Armor
     }
+
     public enum WeaponAttributes
     {
         Attack,
         CriticalChance,
         CriticalModifier
+    }
+
+    public enum ArmorAttributes
+    {
+        Defense,
+        DodgeChance,
+        AttackBonus
     }
 }
 
@@ -60,8 +71,10 @@ public class Weapon : Item, IRenameable
 {
     private int damageModifier;
     public int DamageModifier { get => damageModifier; set => damageModifier = value; }
+
     private int criticalChance;
     public int CriticalChance { get => criticalChance; set => criticalChance = value; }
+
     private int criticalModifier;
     public int CriticalModifier { get => criticalModifier; set => criticalModifier = value; }
 
@@ -75,6 +88,7 @@ public class Weapon : Item, IRenameable
         this.Name = inName;
         this.Equippable = true;
         this.Type = ItemType.Weapon;
+
         this.DamageModifier = inDamage;
         this.CriticalChance = inCriticalChance;
         this.CriticalModifier = inCriticalModifier;
@@ -91,17 +105,26 @@ public class Armor : Item, IRenameable
     private int defenseModifier;
     public int DefenseModifier { get => defenseModifier; set => defenseModifier = value; }
 
+    private int dodgeChance;
+    public int DodgeChance { get => dodgeChance; set => dodgeChance = value;}
+
+    private int attackBonus;
+    public int AttackBonus { get => attackBonus; set => attackBonus = value; }
+
     public void Rename(string inRename)
     {
         this.name = inRename;
     }
 
-    public Armor(string inName, int inDefense)
+    public Armor(string inName, int inDefense, int inDodge, int inBonus)
     {
         this.Name = inName;
         this.Equippable = true;
         this.type = ItemType.Armor;
+
         this.DefenseModifier = inDefense;
+        this.DodgeChance = inDodge;
+        this.AttackBonus = inBonus;
     }
     //* Only for JSON deserialization
     public Armor()

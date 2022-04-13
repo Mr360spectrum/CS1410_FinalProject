@@ -76,7 +76,7 @@ public class Tests
         var game = GameHelper.GenerateTestGame();
         var plate = new Armor("plate", 5, 2, 3);
         game.player.EquipArmor(plate);
-        Assert.AreEqual("plate", game.player.EquippedArmor.name);
+        Assert.AreEqual("plate", game.player.EquippedArmor.Name);
         Assert.AreEqual(5, game.player.EquippedArmor.DefenseModifier);
     }
 

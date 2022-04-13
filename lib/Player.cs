@@ -26,6 +26,7 @@ public class Player : Entity
     }
 
     public Weapon EquippedWeapon { get; protected set; }
+    public Armor EquippedArmor { get; protected set; }
 
     public Player(string inName)
     {
@@ -66,6 +67,11 @@ public class Player : Entity
     public void EquipWeapon(Weapon inWeapon)
     {
         this.EquippedWeapon = inWeapon;
+    }
+
+    public void EquipArmor(Armor inArmor)
+    {
+        this.EquippedArmor = inArmor;
     }
 
     public void ShowInventory()

@@ -25,8 +25,8 @@ public class Player : Entity
         set => inventory = value;
     }
 
-    public Weapon EquippedWeapon { get; protected set; }
-    public Armor EquippedArmor { get; protected set; }
+    public Weapon? EquippedWeapon { get; protected set; }
+    public Armor? EquippedArmor { get; protected set; }
 
     public Player(string inName)
     {

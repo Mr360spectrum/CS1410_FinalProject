@@ -117,4 +117,28 @@ public class Tests
         Assert.AreEqual(6, a3.DodgeChance);
         Assert.AreEqual(6, a3.AttackBonus);
     }
+
+    [Test]
+    public void TestCombineArmorWithDodgeChanceSelected()
+    {
+        var a1 = new Armor("a1", 11, 5, 3);
+        var a2 = new Armor("a2", 2, 7, 13);
+        var a3 = InventoryHelper.CombineArmor(a1, a2, Item.ArmorAttributes.DodgeChance);
+        Assert.AreEqual("a1", a3.Name);
+        Assert.AreEqual(6, a3.DefenseModifier);
+        Assert.AreEqual(7, a3.DodgeChance);
+        Assert.AreEqual(8, a3.AttackBonus);
+    }
+
+    [Test]
+    public void TestCombineArmorWithAttackBonusSelected()
+    {
+        var a1 = new Armor("a1", 8, 4, 3);
+        var a2 = new Armor("a2", 2, 3, 6);
+        var a3 = InventoryHelper.CombineArmor(a1, a2, Item.ArmorAttributes.AttackBonus);
+        Assert.AreEqual("a1", a3.Name);
+        Assert.AreEqual(5, a3.DefenseModifier);
+        Assert.AreEqual(3, a3.DodgeChance);
+        Assert.AreEqual(6, a3.AttackBonus);
+    }
 }

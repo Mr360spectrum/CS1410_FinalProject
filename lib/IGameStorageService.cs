@@ -2,8 +2,8 @@ namespace lib;
 
 public interface IGameStorageService
 {
-    public void Save(Game game);
-    public Game LoadGame();
+    void Save(Game game);
+    Game LoadGame();
 }
 
 public class GameStorageService : IGameStorageService

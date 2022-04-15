@@ -172,4 +172,14 @@ public class Tests
         Assert.Less(a.DodgeChance, 10);
         Assert.Less(a.AttackBonus, 5);
     }
+
+    [Test]
+    public void TestForgeWeapon()
+    {
+        var w = Inventory.ForgeWeapon("forge weapon");
+        Assert.AreEqual("forged armor", w.Name);
+        Assert.Less(w.AttackBonus, 10);
+        Assert.Less(w.CriticalChance, 20);
+        Assert.Less(w.CriticalModifier, 5);
+    }
 }

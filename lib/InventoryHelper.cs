@@ -109,4 +109,14 @@ public class InventoryHelper
 
         return new Armor(name, defenseModifier, dodgeChance, attackBonus);
     }
+
+    public static Weapon ForgeWeapon(string name)
+    {
+        var rand = new Random();
+        int attack = rand.Next(1, 10);
+        int criticalChance = rand.Next(1, 20);
+        int criticalModifier = rand.Next(1, 5);
+
+        return new Weapon(name, attack, criticalChance, criticalModifier);
+    }
 }

@@ -176,9 +176,9 @@ public class Tests
     [Test]
     public void TestForgeWeapon()
     {
-        var w = Inventory.ForgeWeapon("forge weapon");
-        Assert.AreEqual("forged armor", w.Name);
-        Assert.Less(w.AttackBonus, 10);
+        var w = InventoryHelper.ForgeWeapon("forged weapon");
+        Assert.AreEqual("forged weapon", w.Name);
+        Assert.Less(w.DamageModifier, 10);
         Assert.Less(w.CriticalChance, 20);
         Assert.Less(w.CriticalModifier, 5);
     }

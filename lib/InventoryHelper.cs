@@ -83,23 +83,30 @@ public class InventoryHelper
                 newDefenseModifier = armor1.DefenseModifier > armor2.DefenseModifier ? armor1.DefenseModifier : armor2.DefenseModifier;
                 newDodgeChance = (armor1.DodgeChance + armor2.DodgeChance) / 2;
                 newAttackBonus = (armor1.AttackBonus + armor2.AttackBonus) / 2;
-
                 return new Armor(armor1.Name, newDefenseModifier, newDodgeChance, newAttackBonus);
             case Item.ArmorAttributes.DodgeChance:
                 newDefenseModifier = (armor1.DefenseModifier + armor2.DefenseModifier) / 2;
                 newDodgeChance = armor1.DodgeChance > armor2.DodgeChance ? armor1.DodgeChance : armor2.DodgeChance;
                 newAttackBonus = (armor1.AttackBonus + armor2.AttackBonus) / 2;
-
                 return new Armor(armor1.Name, newDefenseModifier, newDodgeChance, newAttackBonus);
             case Item.ArmorAttributes.AttackBonus:
                 newDefenseModifier = (armor1.DefenseModifier + armor2.DefenseModifier) / 2;
                 newDodgeChance = (armor1.DodgeChance + armor2.DodgeChance) / 2;
                 newAttackBonus = armor1.AttackBonus > armor2.AttackBonus ? armor1.AttackBonus : armor2.AttackBonus;
-
                 return new Armor(armor1.Name, newDefenseModifier, newDodgeChance, newAttackBonus);
             default:
                 //This should never be called because the only possible options for selectedAttr are already accounted for
                 return new Armor("Impossible armor", 0, 0, 0);
         }
+    }
+
+    public static Armor ForgeArmor(string name)
+    {
+        var rand = new Random();
+        int defenseModifier = rand.Next(1, 30);
+        int dodgeChance = rand.Next(1, 10);
+        int attackBonus = rand.Next(1, 5);
+
+        return new Armor(name, defenseModifier, dodgeChance, attackBonus);
     }
 }

@@ -162,4 +162,14 @@ public class Tests
         game.player.TakeDamage(3);
         Assert.AreEqual(98, game.player.Health);
     }
+
+    [Test]
+    public void TestForgeArmor()
+    {
+        var a = InventoryHelper.ForgeArmor("forged armor");
+        Assert.AreEqual("forged armor", a.Name);
+        Assert.Less(a.DefenseModifier, 30);
+        Assert.Less(a.DodgeChance, 10);
+        Assert.Less(a.AttackBonus, 5);
+    }
 }

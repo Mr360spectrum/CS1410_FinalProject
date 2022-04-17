@@ -119,4 +119,24 @@ public class InventoryHelper
 
         return new Weapon(name, attack, criticalChance, criticalModifier);
     }
+
+    public static Armor CreateNewArmorInChest()
+    {
+        var rand = new Random();
+        int defenseModifier = rand.Next(5, 40);
+        int dodgeChance = rand.Next(5, 20);
+        int attackBonus = rand.Next(2, 5);
+
+        return new Armor("New Armor", defenseModifier, dodgeChance, attackBonus);
+    }
+
+    public static Weapon CreateNewWeaponInChest()
+    {
+        var rand = new Random();
+        int attack = rand.Next(5, 15);
+        int criticalChance = rand.Next(5, 30);
+        int criticalModifier = rand.Next(3, 8);
+
+        return new Weapon("New Weapon", attack, criticalChance, criticalModifier);
+    }
 }

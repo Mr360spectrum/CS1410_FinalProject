@@ -68,7 +68,7 @@ public class Player : Entity
 
     public override void TakeDamage(double amount)
     {
-        if (EquippedWeapon != null)
+        if (EquippedArmor != null)
         {
             var rand = new Random();
             var randNum = rand.Next(101);
@@ -96,14 +96,12 @@ public class Player : Entity
     {
         this.EquippedArmor = inArmor;
         this.Defense = EquippedArmor.DefenseModifier;
-
     }
 
-    public void ShowInventory()
+    public void ShowInventory(bool forgeInArea)
     {
         while (true)
         {
-            //!REMOVE
             Console.Clear();
             if (this.inventory.Count == 0)
             {
@@ -134,39 +132,197 @@ public class Player : Entity
 
             var selectedItem = inventory[selection];
             Console.Clear();
-            if (selectedItem.Type == Item.ItemType.Crafting)
+            if (!forgeInArea)
             {
-                Console.WriteLine("There are no options available.");
-            }
-            else if (selectedItem.Type == Item.ItemType.Armor)
-            {
-                Console.WriteLine("Select an option:");
-                Console.WriteLine("1. Rename");
-                var option = Console.ReadLine();
-                switch (option)
+                if (selectedItem.Type == Item.ItemType.Crafting)
                 {
-                    case "1":
-                        Console.WriteLine("What would you like to rename the item to?");
-                        (selectedItem as Armor).Rename(Console.ReadLine());
-                        break;
+                    Console.WriteLine("There are no options available.");
+                }
+                else if (selectedItem.Type == Item.ItemType.Armor)
+                {
+                    Console.WriteLine("Select an option:");
+                    Console.WriteLine("1. Rename");
+                    Console.WriteLine("2. Equip");
+                    Console.WriteLine("3. Go back");
+                    var option = Console.ReadLine();
+                    switch (option)
+                    {
+                        case "1":
+                            Console.WriteLine("What would you like to rename the item to?");
+                            (selectedItem as Armor).Rename(Console.ReadLine());
+                            break;
+                        case "2":
+                            EquipArmor(selectedItem as Armor);
+                            Console.WriteLine($"{selectedItem.Name} equipped.");
+                            break;
+                        case "3":
+                            continue;
+                        default:
+                            Console.WriteLine("That is not a valid option.");
+                            continue;
+                    }
+                }
+                else if (selectedItem.Type == Item.ItemType.Weapon)
+                {
+                    Console.WriteLine("Select an option:");
+                    Console.WriteLine("1. Rename");
+                    Console.WriteLine("2. Equip");
+                    Console.WriteLine("3. Go back");
+                    var option = Console.ReadLine();
+                    switch (option)
+                    {
+                        case "1":
+                            Console.WriteLine("What would you like to rename the item to?");
+                            (selectedItem as Weapon).Rename(Console.ReadLine());
+                            break;
+                        case "2":
+                            EquipWeapon(selectedItem as Weapon);
+                            Console.WriteLine($"{selectedItem.Name} equipped.");
+                            break;
+                        case "3":
+                            continue;
+                        default:
+                            Console.WriteLine("That is not a valid option.");
+                            continue;
+                    }
                 }
             }
-            else if (selectedItem.Type == Item.ItemType.Weapon)
+            else
             {
-                Console.WriteLine("Select an option:");
-                Console.WriteLine("1. Rename");
-                Console.WriteLine("2. Equip");
-                var option = Console.ReadLine();
-                switch (option)
+                if (selectedItem.Type == Item.ItemType.Crafting)
                 {
-                    case "1":
-                        Console.WriteLine("What would you like to rename the item to?");
-                        (selectedItem as Weapon).Rename(Console.ReadLine());
-                        break;
-                    case "2":
-                        EquipWeapon(selectedItem as Weapon);
-                        Console.WriteLine($"{selectedItem.Name} equipped.");
-                        break;
+                    //TODO: Check for number of sticks and remove them
+                    Console.WriteLine("Select an option:");
+                    Console.WriteLine("1. Forge Weapon (uses two sticks)");
+                    Console.WriteLine("2. Forge Armor (uses two sticks)");
+                    Console.WriteLine("3. Go back");
+                    var option = Console.ReadLine();
+                    switch (option)
+                    {
+                        case "1":
+                            GainItem(InventoryHelper.ForgeWeapon("Forged Weapon"));
+                            break;
+                        case "2":
+                            GainItem(InventoryHelper.ForgeArmor("Forged Armor"));
+                            break;
+                        case "3":
+                            continue;
+                        default:
+                            Console.WriteLine("That is not a valid option.");
+                            continue;
+                    }
+                }
+                else if (selectedItem.Type == Item.ItemType.Armor)
+                {
+                    Console.WriteLine("Select an option:");
+                    Console.WriteLine("1. Rename");
+                    Console.WriteLine("2. Equip");
+                    Console.WriteLine("3. Combine");
+                    Console.WriteLine("4. Go back");
+                    var option = Console.ReadLine();
+                    switch (option)
+                    {
+                        case "1":
+                            Console.WriteLine("What would you like to rename the item to?");
+                            (selectedItem as Armor).Rename(Console.ReadLine());
+                            break;
+                        case "2":
+                            EquipArmor(selectedItem as Armor);
+                            Console.WriteLine($"{selectedItem.Name} equipped.");
+                            break;
+                        case "3":
+                            Console.WriteLine("Select another armor piece to combine:");
+                            int j = 0;
+                            Console.WriteLine("");
+                            foreach (var item in this.inventory)
+                            {
+                                if (item is Armor)
+                                {
+                                    Console.WriteLine((j + 1) + ". " + item.Name);
+                                }
+                                j++;
+                            }
+
+                            var otherArmor = Console.ReadLine();
+
+                            Console.WriteLine("Select which attribute to keep (the rest will be determined by the average):");
+                            var armorAttributes = new Item.ArmorAttributes[] {Item.ArmorAttributes.AttackBonus, Item.ArmorAttributes.Defense, Item.ArmorAttributes.DodgeChance};
+
+                            var armorAttrIndex = 0;
+                            foreach (var attribute in armorAttributes)
+                            {
+                                Console.WriteLine($"{armorAttrIndex+1}. {attribute.ToString()}");
+                            }
+                            var armorAttrSelection = int.Parse(Console.ReadLine());
+                            var selectedArmorAttr = armorAttributes[armorAttrSelection];
+
+                            GainItem(InventoryHelper.CombineArmor(selectedItem as Armor, inventory[int.Parse(otherArmor)-1] as Armor, selectedArmorAttr));
+                            inventory.Remove(selectedItem);
+                            inventory.RemoveAt(int.Parse(otherArmor)-1);
+                            continue;
+                        case "4":
+                            continue;
+                        default:
+                            Console.WriteLine("That is not a valid option.");
+                            continue;
+                    }
+                }
+                else if (selectedItem.Type == Item.ItemType.Weapon)
+                {
+                    Console.WriteLine("Select an option:");
+                    Console.WriteLine("1. Rename");
+                    Console.WriteLine("2. Equip");
+                    Console.WriteLine("3. Combine");
+                    Console.WriteLine("4. Go back");
+                    var option = Console.ReadLine();
+                    switch (option)
+                    {
+                        case "1":
+                            Console.WriteLine("What would you like to rename the item to?");
+                            (selectedItem as Weapon).Rename(Console.ReadLine());
+                            break;
+                        case "2":
+                            EquipWeapon(selectedItem as Weapon);
+                            Console.WriteLine($"{selectedItem.Name} equipped.");
+                            break;
+                        case "3":
+                            Console.WriteLine("Select another weapon to combine:");
+                            int j = 0;
+                            Console.WriteLine("");
+                            foreach (var item in this.inventory)
+                            {
+                                if (item is Weapon)
+                                {
+                                    Console.WriteLine((j + 1) + ". " + item.Name);
+                                }
+                                j++;
+                            }
+
+                            var otherWeapon = Console.ReadLine();
+
+                            Console.WriteLine("Select which attribute to keep (the rest will be determined by the average):");
+                            var weaponAttributes = new Item.WeaponAttributes[] {Item.WeaponAttributes.Attack, Item.WeaponAttributes.CriticalChance, Item.WeaponAttributes.CriticalModifier};
+
+                            var weaponAttrIndex = 0;
+                            foreach (var attribute in weaponAttributes)
+                            {
+                                Console.WriteLine($"{weaponAttrIndex+1}. {attribute.ToString()}");
+                                weaponAttrIndex++;
+                            }
+                            var weaponAttrSelection = int.Parse(Console.ReadLine());
+                            var selectedWeaponAttr = weaponAttributes[weaponAttrSelection-1];
+
+
+                            GainItem(InventoryHelper.CombineWeapons(selectedItem as Weapon, inventory[int.Parse(otherWeapon)-1] as Weapon, selectedWeaponAttr));
+                            inventory.Remove(selectedItem);
+                            inventory.RemoveAt(int.Parse(otherWeapon)-1);
+                            continue;
+                        case "4":
+                            continue;
+                        default:
+                            Console.WriteLine("That is not a valid option.");
+                            continue;
+                    }
                 }
             }
 

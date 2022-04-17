@@ -47,7 +47,6 @@ public class GameHelper
 
         while (true)
         {
-            //TODO: Have the cursor move back and rewrite the highlighted 
             //line instead of clearing the whole screen to prevent flickering
             Console.Clear();
             Console.ForegroundColor = defaultColor;
@@ -202,8 +201,17 @@ public class GameHelper
         Console.Clear();
         Console.WriteLine("Starting a new game...");
         Console.WriteLine("What's your name?");
-        string name = Console.ReadLine();
-        return new Game(name);
+        string name;
+        while (true)
+        {
+            name = Console.ReadLine();
+            if (name == null || name == "")
+            {
+                Console.WriteLine("That is an invalid name.");
+                continue;
+            }
+            return new Game(name);
+        }
     }
 
     public static Game GenerateTestGame()

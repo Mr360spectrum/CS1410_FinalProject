@@ -10,6 +10,7 @@ namespace console
         static void Main(string[] args)
         {
             var game = GameHelper.GetGame();
+
             game.Play();
         }
     }

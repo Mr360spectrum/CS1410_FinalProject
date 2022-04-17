@@ -146,7 +146,7 @@ public class GameHelper
         }
 
         var game = JsonSerializer.Deserialize<Game>(playerDataStr);
-        return new Game(game.player.Name, items);
+        return new Game(game.player.Name, items, game.player.EquippedWeapon, game.player.EquippedArmor);
     }
 
     public static List<string> GetSaves()
@@ -189,10 +189,6 @@ public class GameHelper
         File.WriteAllText(Path.Combine(playerSavePath, "weapons.json"), weaponsJson);
         File.WriteAllText(Path.Combine(playerSavePath, "armor.json"), armorJson);
         File.WriteAllText(Path.Combine(playerSavePath, "crafting.json"), craftingJson);
-
-        Console.WriteLine("Game saved.");
-        Console.WriteLine("Press a key to continue.");
-        Console.ReadKey();
     }
 
     private static Game StartNewGame()
@@ -216,6 +212,6 @@ public class GameHelper
 
     public static Game GenerateTestGame()
     {
-        return new Game("testgame", new List<Item> { new Weapon("Weapon 1", 5, 3, 2), new Weapon("Weapon 2", 4, 1, 1), new Armor("Armor 1", 3, 1, 1), new CraftingItem("Craft 1") });
+        return new Game("testgame", new List<Item> { new Weapon("Weapon 1", 5, 3, 2), new Weapon("Weapon 2", 4, 1, 1), new Armor("Armor 1", 3, 1, 1), new CraftingItem("Craft 1") }, null, null);
     }
 }

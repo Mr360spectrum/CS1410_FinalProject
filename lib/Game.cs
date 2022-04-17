@@ -8,9 +8,11 @@ public class Game
     {
         this.player = new Player(inName);
     }
-    public Game(string inName, List<Item> inventory)
+    public Game(string inName, List<Item> inventory, Weapon equippedWeapon, Armor equipppedArmor)
     {
         this.player = new Player(inName, inventory);
+        player.EquipArmor(equipppedArmor);
+        player.EquipWeapon(equippedWeapon);
     }
     //* Only for JSON deserialization
     public Game()
@@ -179,6 +181,7 @@ public class Game
                         break;
                 }
             }
+            GameHelper.Save(this);
         }
     }
 }

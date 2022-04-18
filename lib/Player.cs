@@ -26,16 +26,16 @@ public class Player : Entity
     }
 
     private Weapon? equippedWeapon;
-    public Weapon? EquippedWeapon 
-    { 
-        get => equippedWeapon; 
-        set => equippedWeapon = value; 
+    public Weapon? EquippedWeapon
+    {
+        get => equippedWeapon;
+        set => equippedWeapon = value;
     }
     private Armor? equippedArmor;
-    public Armor? EquippedArmor 
-    { 
-        get => equippedArmor; 
-        set => equippedArmor = value; 
+    public Armor? EquippedArmor
+    {
+        get => equippedArmor;
+        set => equippedArmor = value;
     }
 
     public Player(string inName)
@@ -105,7 +105,10 @@ public class Player : Entity
     public void EquipArmor(Armor inArmor)
     {
         this.EquippedArmor = inArmor;
-        this.Defense = EquippedArmor.DefenseModifier;
+        if (this.EquippedArmor != null)
+        {
+            this.Defense = EquippedArmor.DefenseModifier;
+        }
     }
 
     public void ShowInventory(bool forgeInArea)
@@ -210,10 +213,68 @@ public class Player : Entity
                     switch (option)
                     {
                         case "1":
-                            GainItem(InventoryHelper.ForgeWeapon("Forged Weapon"));
+                            var stickCountForWeapon = 0;
+                            foreach (var item in inventory)
+                            {
+                                if (item is CraftingItem)
+                                {
+                                    stickCountForWeapon++;
+                                }
+                            }
+                            if (stickCountForWeapon >= 2)
+                            {
+                                int removeWeaponStickCount = 0;
+                                inventory.RemoveAt(selection);
+                                for (int k = 0; k < inventory.Count; k++)
+                                {
+                                    if (inventory[k] is CraftingItem)
+                                    {
+                                        inventory.RemoveAt(k);
+                                        removeWeaponStickCount++;
+                                    }
+                                    if (removeWeaponStickCount == 2)
+                                    {
+                                        break;
+                                    }
+                                }
+                                GainItem(InventoryHelper.ForgeWeapon("Forged Weapon"));
+                            }
+                            else
+                            {
+                                Console.WriteLine("You don't have enough sticks!");
+                            }
                             break;
                         case "2":
-                            GainItem(InventoryHelper.ForgeArmor("Forged Armor"));
+                            var stickCountForArmor = 0;
+                            foreach (var item in inventory)
+                            {
+                                if (item is CraftingItem)
+                                {
+                                    stickCountForArmor++;
+                                }
+                            }
+                            if (stickCountForArmor >= 2)
+                            {
+                                int removeArmorStickCount = 0;
+                                inventory.RemoveAt(selection);
+                                for (int k = 0; k < inventory.Count; k++)
+                                {
+                                    if (inventory[k] is CraftingItem)
+                                    {
+                                        inventory.RemoveAt(k);
+                                        removeArmorStickCount++;
+                                    }
+                                    if (removeArmorStickCount == 2)
+                                    {
+                                        break;
+                                    }
+                                }
+                                GainItem(InventoryHelper.ForgeArmor("Forged Armor"));
+                            }
+                            else
+                            {
+                                Console.WriteLine("You don't have enough sticks!");
+                            }
                             break;
                         case "3":
                             continue;
@@ -256,19 +317,19 @@ public class Player : Entity
                             var otherArmor = Console.ReadLine();
 
                             Console.WriteLine("Select which attribute to keep (the rest will be determined by the average):");
-                            var armorAttributes = new Item.ArmorAttributes[] {Item.ArmorAttributes.AttackBonus, Item.ArmorAttributes.Defense, Item.ArmorAttributes.DodgeChance};
+                            var armorAttributes = new Item.ArmorAttributes[] { Item.ArmorAttributes.AttackBonus, Item.ArmorAttributes.Defense, Item.ArmorAttributes.DodgeChance };
 
                             var armorAttrIndex = 0;
                             foreach (var attribute in armorAttributes)
                             {
-                                Console.WriteLine($"{armorAttrIndex+1}. {attribute.ToString()}");
+                                Console.WriteLine($"{armorAttrIndex + 1}. {attribute.ToString()}");
                             }
                             var armorAttrSelection = int.Parse(Console.ReadLine());
                             var selectedArmorAttr = armorAttributes[armorAttrSelection];
 
-                            GainItem(InventoryHelper.CombineArmor(selectedItem as Armor, inventory[int.Parse(otherArmor)-1] as Armor, selectedArmorAttr));
+                            GainItem(InventoryHelper.CombineArmor(selectedItem as Armor, inventory[int.Parse(otherArmor) - 1] as Armor, selectedArmorAttr));
                             inventory.Remove(selectedItem);
-                            inventory.RemoveAt(int.Parse(otherArmor)-1);
+                            inventory.RemoveAt(int.Parse(otherArmor) - 1);
                             continue;
                         case "4":
                             continue;
@@ -311,21 +372,21 @@ public class Player : Entity
                             var otherWeapon = Console.ReadLine();
 
                             Console.WriteLine("Select which attribute to keep (the rest will be determined by the average):");
-                            var weaponAttributes = new Item.WeaponAttributes[] {Item.WeaponAttributes.Attack, Item.WeaponAttributes.CriticalChance, Item.WeaponAttributes.CriticalModifier};
+                            var weaponAttributes = new Item.WeaponAttributes[] { Item.WeaponAttributes.Attack, Item.WeaponAttributes.CriticalChance, Item.WeaponAttributes.CriticalModifier };
 
                             var weaponAttrIndex = 0;
                             foreach (var attribute in weaponAttributes)
                             {
-                                Console.WriteLine($"{weaponAttrIndex+1}. {attribute.ToString()}");
+                                Console.WriteLine($"{weaponAttrIndex + 1}. {attribute.ToString()}");
                                 weaponAttrIndex++;
                             }
                             var weaponAttrSelection = int.Parse(Console.ReadLine());
-                            var selectedWeaponAttr = weaponAttributes[weaponAttrSelection-1];
+                            var selectedWeaponAttr = weaponAttributes[weaponAttrSelection - 1];
 
 
-                            GainItem(InventoryHelper.CombineWeapons(selectedItem as Weapon, inventory[int.Parse(otherWeapon)-1] as Weapon, selectedWeaponAttr));
+                            GainItem(InventoryHelper.CombineWeapons(selectedItem as Weapon, inventory[int.Parse(otherWeapon) - 1] as Weapon, selectedWeaponAttr));
                             inventory.Remove(selectedItem);
-                            inventory.RemoveAt(int.Parse(otherWeapon)-1);
+                            inventory.RemoveAt(int.Parse(otherWeapon) - 1);
                             continue;
                         case "4":
                             continue;

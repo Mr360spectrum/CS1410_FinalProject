@@ -181,7 +181,8 @@ public class Game
                         break;
                 }
             }
-            GameHelper.Save(this);
+            //*Will be moved into Program.cs, where an instance of GameHelper will exist
+            //GameHelper.Save(this);
         }
     }
 }

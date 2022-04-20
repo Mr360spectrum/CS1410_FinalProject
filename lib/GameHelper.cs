@@ -8,8 +8,14 @@ public class GameHelper
 {
     public static ConsoleColor defaultColor = ConsoleColor.DarkGreen;
     public static ConsoleColor highlightColor = ConsoleColor.DarkRed;
+    private IGameStorageService StorageService {get; set;}
 
-    public static Game GetGame()
+    public GameHelper(IGameStorageService inStorageService)
+    {
+        this.StorageService = inStorageService;
+    }
+
+    public Game GetGame()
     {
         var options = new List<string>() { "New Game", "Load Game", "Exit" };
 
@@ -40,7 +46,7 @@ public class GameHelper
         }
     }
 
-    private static int DisplayMenu(string logo, List<string> options, string message = "")
+    private int DisplayMenu(string logo, List<string> options, string message = "")
     {
         int cursorPos = 0;
         int maxPos = options.Count - 1;
@@ -103,7 +109,7 @@ public class GameHelper
         }
     }
 
-    public static Game LoadGame()
+    public Game LoadGame()
     {
         var loadLogo = "LOAD";
         var fileOptions = GetSaves();
@@ -113,43 +119,14 @@ public class GameHelper
             Console.WriteLine("There are no saved games.");
             Console.WriteLine("Press a key to create a new game.");
             Console.ReadKey();
-            return GameHelper.StartNewGame();
+            return this.StartNewGame();
         }
         var nameSelection = DisplayMenu(loadLogo, fileOptions, "Select a saved game.");
 
-        return DeserializeGame(fileOptions[nameSelection]);
+        return StorageService.LoadGame(fileOptions[nameSelection]);
     }
 
-    public static Game DeserializeGame(string saveName)
-    {
-        string playerDataStr = File.ReadAllText($"../saves/{saveName}/game.json");
-        string weaponsDataStr = File.ReadAllText($"../saves/{saveName}/weapons.json");
-        string armorDataStr = File.ReadAllText($"../saves/{saveName}/armor.json");
-        string craftingDataStr = File.ReadAllText($"../saves/{saveName}/crafting.json");
-
-        var weaponsList = JsonSerializer.Deserialize<List<Weapon>>(weaponsDataStr);
-        var armorList = JsonSerializer.Deserialize<List<Armor>>(armorDataStr);
-        var craftingList = JsonSerializer.Deserialize<List<CraftingItem>>(craftingDataStr);
-
-        List<Item> items = new List<Item>();
-        foreach (var w in weaponsList)
-        {
-            items.Add(w as Item);
-        }
-        foreach (var a in armorList)
-        {
-            items.Add(a as Armor);
-        }
-        foreach (var c in craftingList)
-        {
-            items.Add(c as CraftingItem);
-        }
-
-        var game = JsonSerializer.Deserialize<Game>(playerDataStr);
-        return new Game(game.player.Name, items, game.player.EquippedWeapon, game.player.EquippedArmor);
-    }
-
-    public static List<string> GetSaves()
+    public List<string> GetSaves()
     {
         var savesArray = System.IO.Directory.GetDirectories("../saves");
         var savesList = new List<string>();
@@ -162,36 +139,12 @@ public class GameHelper
         return savesList;
     }
 
-    public static void Save(Game inGame)
+    public void Save(Game inGame)
     {
-        string playerSavePath = $"../saves/{inGame.player.Name}";
-
-        try
-        {
-            if (!Directory.Exists(playerSavePath))
-            {
-                Directory.CreateDirectory(playerSavePath);
-            }
-
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine("An error occurred while saving.");
-            Console.WriteLine(ex.Message);
-        }
-
-        //Save current game information
-        string gameJson = JsonSerializer.Serialize<Game>(inGame);
-        File.WriteAllText(Path.Combine(playerSavePath, "game.json"), gameJson);
-
-        //Save inventory items separately
-        var (weaponsJson, armorJson, craftingJson) = InventoryHelper.GetJson(inGame.player.Inventory);
-        File.WriteAllText(Path.Combine(playerSavePath, "weapons.json"), weaponsJson);
-        File.WriteAllText(Path.Combine(playerSavePath, "armor.json"), armorJson);
-        File.WriteAllText(Path.Combine(playerSavePath, "crafting.json"), craftingJson);
+        StorageService.SaveGame(inGame);
     }
 
-    private static Game StartNewGame()
+    private Game StartNewGame()
     {
         //!REMOVE
         Console.Clear();
@@ -210,7 +163,7 @@ public class GameHelper
         }
     }
 
-    public static Game GenerateTestGame()
+    public Game GenerateTestGame()
     {
         return new Game("testgame", new List<Item> { new Weapon("Weapon 1", 5, 3, 2), new Weapon("Weapon 2", 4, 1, 1), new Armor("Armor 1", 3, 1, 1), new CraftingItem("Craft 1") }, null, null);
     }

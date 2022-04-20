@@ -9,7 +9,8 @@ namespace console
     {
         static void Main(string[] args)
         {
-            var game = GameHelper.GetGame();
+            GameHelper helper = new GameHelper(new OnDiskGameStorageService());
+            Game game = helper.GetGame();
 
             game.Play();
         }

@@ -5,9 +5,11 @@ namespace tests;
 
 public class Tests
 {
+    public GameHelper helper;
     [SetUp]
     public void Setup()
     {
+        helper = new GameHelper(new InMemoryGameStorageService());
     }
 
     [Test]
@@ -35,7 +37,7 @@ public class Tests
     [Test]
     public void TestSplitInventory()
     {
-        var game = GameHelper.GenerateTestGame();
+        var game = helper.GenerateTestGame();
         var (weapons, armor, crafting) = InventoryHelper.SplitInventory(game.player.Inventory);
         Assert.AreEqual("Weapon 1", weapons[0].Name);
         Assert.AreEqual("Weapon 2", weapons[1].Name);
@@ -46,7 +48,7 @@ public class Tests
     [Test]
     public void TestTakeDamage()
     {
-        var game = GameHelper.GenerateTestGame();
+        var game = helper.GenerateTestGame();
         game.player.TakeDamage(3);
         Assert.AreEqual(97, game.player.Health);
     }
@@ -54,7 +56,7 @@ public class Tests
     [Test]
     public void TestAttack()
     {
-        var game = GameHelper.GenerateTestGame();
+        var game = helper.GenerateTestGame();
         var wolf = new Enemy(Entity.EntityType.Wolf);
         game.player.Attack(wolf);
         Assert.AreEqual(4, wolf.Health);
@@ -63,7 +65,7 @@ public class Tests
     [Test]
     public void TestEquipWeapon()
     {
-        var game = GameHelper.GenerateTestGame();
+        var game = helper.GenerateTestGame();
         var sword = new Weapon("sword", 5, 1, 1);
         game.player.EquipWeapon(sword);
         Assert.AreEqual("sword", game.player.EquippedWeapon.Name);
@@ -73,7 +75,7 @@ public class Tests
     [Test]
     public void TestEquipArmor()
     {
-        var game = GameHelper.GenerateTestGame();
+        var game = helper.GenerateTestGame();
         var plate = new Armor("plate", 5, 2, 3);
         game.player.EquipArmor(plate);
         Assert.AreEqual("plate", game.player.EquippedArmor.Name);

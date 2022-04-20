@@ -38,7 +38,7 @@ public class GameHelper
                 case 0:
                     return StartNewGame();
                 case 1:
-                    return LoadGame();
+                    return LoadGameFromMenu();
                 case 2:
                     System.Environment.Exit(1);
                     break;
@@ -109,7 +109,7 @@ public class GameHelper
         }
     }
 
-    public Game LoadGame()
+    public Game LoadGameFromMenu()
     {
         var loadLogo = "LOAD";
         var fileOptions = GetSaves();
@@ -123,7 +123,7 @@ public class GameHelper
         }
         var nameSelection = DisplayMenu(loadLogo, fileOptions, "Select a saved game.");
 
-        return StorageService.LoadGame(fileOptions[nameSelection]);
+        return this.Load(fileOptions[nameSelection]);
     }
 
     public List<string> GetSaves()
@@ -137,6 +137,11 @@ public class GameHelper
         }
 
         return savesList;
+    }
+
+    public Game Load(string inName)
+    {
+        return StorageService.LoadGame(inName);
     }
 
     public void Save(Game inGame)

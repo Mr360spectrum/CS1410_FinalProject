@@ -184,4 +184,13 @@ public class Tests
         Assert.Less(w.CriticalChance, 20);
         Assert.Less(w.CriticalModifier, 5);
     }
+
+    [Test]
+    public void TestSaveAndLoad()
+    {
+        var game = helper.GenerateTestGame();
+        helper.Save(game);
+        var loadedGame = helper.Load("");
+        Assert.AreEqual("testgame", loadedGame.player.Name);
+    }
 }

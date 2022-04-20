@@ -4,7 +4,7 @@ namespace lib;
 
 public interface IGameStorageService
 {
-    void SaveGame(Game game);
+    void SaveGame(Game inGame);
     Game LoadGame(string saveName);
 }
 
@@ -39,9 +39,9 @@ public class OnDiskGameStorageService : IGameStorageService
         return new Game(game.player.Name, items, game.player.EquippedWeapon, game.player.EquippedArmor);
     }
 
-    public void SaveGame(Game game)
+    public void SaveGame(Game inGame)
     {
-        string playerSavePath = $"../saves/{game.player.Name}";
+        string playerSavePath = $"../saves/{inGame.player.Name}";
 
         try
         {
@@ -58,11 +58,11 @@ public class OnDiskGameStorageService : IGameStorageService
         }
 
         //Save current game information
-        string gameJson = JsonSerializer.Serialize<Game>(game);
+        string gameJson = JsonSerializer.Serialize<Game>(inGame);
         File.WriteAllText(Path.Combine(playerSavePath, "game.json"), gameJson);
 
         //Save inventory items separately
-        var (weaponsJson, armorJson, craftingJson) = InventoryHelper.GetJson(game.player.Inventory);
+        var (weaponsJson, armorJson, craftingJson) = InventoryHelper.GetJson(inGame.player.Inventory);
         File.WriteAllText(Path.Combine(playerSavePath, "weapons.json"), weaponsJson);
         File.WriteAllText(Path.Combine(playerSavePath, "armor.json"), armorJson);
         File.WriteAllText(Path.Combine(playerSavePath, "crafting.json"), craftingJson);
@@ -71,13 +71,14 @@ public class OnDiskGameStorageService : IGameStorageService
 
 public class InMemoryGameStorageService : IGameStorageService
 {
+    private Game game;
     public Game LoadGame(string saveName)
     {
-        throw new NotImplementedException();
+        return game;
     }
 
-    public void SaveGame(Game game)
+    public void SaveGame(Game inGame)
     {
-        throw new NotImplementedException();
+        game = inGame;
     }
 }

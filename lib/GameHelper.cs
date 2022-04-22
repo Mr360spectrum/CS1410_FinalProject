@@ -6,8 +6,8 @@ namespace lib;
 
 public class GameHelper
 {
-    public static ConsoleColor defaultColor = ConsoleColor.DarkGreen;
-    public static ConsoleColor highlightColor = ConsoleColor.DarkRed;
+    public static ConsoleColor DefaultColor = ConsoleColor.DarkGreen;
+    public static ConsoleColor HighlightColor = ConsoleColor.DarkRed;
     private IGameStorageService StorageService {get; set;}
 
     public GameHelper(IGameStorageService inStorageService)
@@ -55,7 +55,7 @@ public class GameHelper
         {
             //line instead of clearing the whole screen to prevent flickering
             Console.Clear();
-            Console.ForegroundColor = defaultColor;
+            Console.ForegroundColor = DefaultColor;
             Console.WriteLine(logo);
             Console.WriteLine("Use the arrow keys to navigate.");
             if (message != "")
@@ -66,9 +66,9 @@ public class GameHelper
             {
                 if (options[cursorPos] == option)
                 {
-                    Console.ForegroundColor = highlightColor;
+                    Console.ForegroundColor = HighlightColor;
                     Console.WriteLine($" > {option} <");
-                    Console.ForegroundColor = defaultColor;
+                    Console.ForegroundColor = DefaultColor;
                 }
                 else
                 {

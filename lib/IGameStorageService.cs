@@ -43,18 +43,9 @@ public class OnDiskGameStorageService : IGameStorageService
     {
         string playerSavePath = $"../saves/{inGame.player.Name}";
 
-        try
+        if (!Directory.Exists(playerSavePath))
         {
-            if (!Directory.Exists(playerSavePath))
-            {
-                Directory.CreateDirectory(playerSavePath);
-            }
-
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine("An error occurred while saving.");
-            Console.WriteLine(ex.Message);
+            Directory.CreateDirectory(playerSavePath);
         }
 
         //Save current game information

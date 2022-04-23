@@ -10,12 +10,20 @@ namespace console
     {
         static void Main(string[] args)
         {
-
             while (true) //Allows the player to restart in case saving fails
             {
                 GameHelper helper = new GameHelper(new OnDiskGameStorageService());
-                Game game = GetGame(helper);
-                Play(game, helper);
+                try
+                {
+                    Game game = GetGame(helper);
+                    Play(game, helper);
+                }
+                catch
+                {
+                    Console.WriteLine("There was an error loading the game.");
+                    Console.WriteLine("Press enter to go back to the main menu.");
+                    Console.ReadLine();
+                }
             }
         }
 
@@ -91,14 +99,34 @@ namespace console
 
                 Console.WriteLine("\nEnter an empty string to exit.");
                 Console.WriteLine("Select which item you'd like to view options for: ");
-                string input = Console.ReadLine();
-
-                if (input == "")
+                int selection;
+                //Ensure that input can be parsed and is between 1 and inventory.Count
+                while (true)
                 {
-                    //!REMOVE
-                    return;
+                    string input = Console.ReadLine();
+
+                    if (input == "")
+                    {
+                        return;
+                    }
+
+                    try
+                    {
+                        selection = int.Parse(input);
+                        if (selection > inventory.Count || selection < 1)
+                        {
+                            Console.WriteLine("That input is out of range.");
+                            continue;
+                        }
+                        selection -= 1;
+                        break;
+                    }
+                    catch
+                    {
+                        Console.WriteLine("That is not a valid input.");
+                        continue;
+                    }
                 }
-                int selection = int.Parse(input) - 1;
 
                 var selectedItem = inventory[selection];
                 Console.Clear();
@@ -114,18 +142,18 @@ namespace console
                         Console.WriteLine("1. Rename");
                         Console.WriteLine("2. Equip");
                         Console.WriteLine("3. Go back");
-                        var option = Console.ReadLine();
+                        int option = GetInt(1, 3);
                         switch (option)
                         {
-                            case "1":
+                            case 1:
                                 Console.WriteLine("What would you like to rename the item to?");
                                 (selectedItem as Armor).Rename(GetName());
                                 break;
-                            case "2":
+                            case 2:
                                 player.EquipArmor(selectedItem as Armor);
                                 Console.WriteLine($"{selectedItem.Name} equipped.");
                                 break;
-                            case "3":
+                            case 3:
                                 continue;
                             default:
                                 Console.WriteLine("That is not a valid option.");
@@ -138,18 +166,18 @@ namespace console
                         Console.WriteLine("1. Rename");
                         Console.WriteLine("2. Equip");
                         Console.WriteLine("3. Go back");
-                        var option = Console.ReadLine();
+                        var option = GetInt(1, 3);
                         switch (option)
                         {
-                            case "1":
+                            case 1:
                                 Console.WriteLine("What would you like to rename the item to?");
                                 (selectedItem as Weapon).Rename(GetName());
                                 break;
-                            case "2":
+                            case 2:
                                 player.EquipWeapon(selectedItem as Weapon);
                                 Console.WriteLine($"{selectedItem.Name} equipped.");
                                 break;
-                            case "3":
+                            case 3:
                                 continue;
                             default:
                                 Console.WriteLine("That is not a valid option.");
@@ -165,10 +193,10 @@ namespace console
                         Console.WriteLine("1. Forge Weapon (uses two sticks)");
                         Console.WriteLine("2. Forge Armor (uses two sticks)");
                         Console.WriteLine("3. Go back");
-                        var option = Console.ReadLine();
+                        int option = GetInt(1, 3);
                         switch (option)
                         {
-                            case "1":
+                            case 1:
                                 var stickCountForWeapon = 0;
                                 foreach (var item in inventory)
                                 {
@@ -200,7 +228,7 @@ namespace console
                                     Console.WriteLine("You don't have enough sticks!");
                                 }
                                 break;
-                            case "2":
+                            case 2:
                                 var stickCountForArmor = 0;
                                 foreach (var item in inventory)
                                 {
@@ -232,7 +260,7 @@ namespace console
                                     Console.WriteLine("You don't have enough sticks!");
                                 }
                                 break;
-                            case "3":
+                            case 3:
                                 continue;
                             default:
                                 Console.WriteLine("That is not a valid option.");
@@ -246,18 +274,18 @@ namespace console
                         Console.WriteLine("2. Equip");
                         Console.WriteLine("3. Combine");
                         Console.WriteLine("4. Go back");
-                        var option = Console.ReadLine();
+                        var option = GetInt(1, 4);
                         switch (option)
                         {
-                            case "1":
+                            case 1:
                                 Console.WriteLine("What would you like to rename the item to?");
                                 (selectedItem as Armor).Rename(GetName());
                                 break;
-                            case "2":
+                            case 2:
                                 player.EquipArmor(selectedItem as Armor);
                                 Console.WriteLine($"{selectedItem.Name} equipped.");
                                 break;
-                            case "3":
+                            case 3:
                                 Console.WriteLine("Select another armor piece to combine:");
                                 int j = 0;
                                 Console.WriteLine("");
@@ -281,7 +309,7 @@ namespace console
                                     Console.WriteLine($"{armorAttrIndex + 1}. {attribute.ToString()}");
                                     armorAttrIndex++;
                                 }
-                                var armorAttrSelection = int.Parse(Console.ReadLine());
+                                var armorAttrSelection = GetInt(1, 3);
                                 var selectedArmorAttr = armorAttributes[armorAttrSelection];
 
                                 var otherArmor = inventory[otherArmorIndex] as Armor;
@@ -290,7 +318,7 @@ namespace console
                                 inventory.Remove(selectedItem);
                                 inventory.Remove(otherArmor);
                                 continue;
-                            case "4":
+                            case 4:
                                 continue;
                             default:
                                 Console.WriteLine("That is not a valid option.");
@@ -304,18 +332,18 @@ namespace console
                         Console.WriteLine("2. Equip");
                         Console.WriteLine("3. Combine");
                         Console.WriteLine("4. Go back");
-                        var option = Console.ReadLine();
+                        int option = GetInt(1, 4);
                         switch (option)
                         {
-                            case "1":
+                            case 1:
                                 Console.WriteLine("What would you like to rename the item to?");
                                 (selectedItem as Weapon).Rename(GetName());
                                 break;
-                            case "2":
+                            case 2:
                                 player.EquipWeapon(selectedItem as Weapon);
                                 Console.WriteLine($"{selectedItem.Name} equipped.");
                                 break;
-                            case "3":
+                            case 3:
                                 Console.WriteLine("Select another weapon to combine:");
                                 int j = 0;
                                 Console.WriteLine("");
@@ -339,7 +367,7 @@ namespace console
                                     Console.WriteLine($"{weaponAttrIndex + 1}. {attribute.ToString()}");
                                     weaponAttrIndex++;
                                 }
-                                var weaponAttrSelection = int.Parse(Console.ReadLine());
+                                var weaponAttrSelection = GetInt(1, 3);
                                 var selectedWeaponAttr = weaponAttributes[weaponAttrSelection - 1];
 
                                 var otherWeapon = inventory[otherWeaponIndex];
@@ -348,7 +376,7 @@ namespace console
                                 inventory.Remove(selectedItem);
                                 inventory.Remove(otherWeapon);
                                 continue;
-                            case "4":
+                            case 4:
                                 continue;
                             default:
                                 Console.WriteLine("That is not a valid option.");
@@ -562,7 +590,7 @@ namespace console
             string name;
             while (true)
             {
-                name = Console.ReadLine();
+                name = GetName();
                 if (name == null || name == "")
                 {
                     Console.WriteLine("That is an invalid name.");

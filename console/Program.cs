@@ -71,7 +71,17 @@ namespace console
                 Console.WriteLine("");
                 foreach (var item in player.Inventory)
                 {
-                    Console.WriteLine((i + 1) + ". " + item.Name);
+                    Console.WriteLine((i + 1) + ". " + item.Name + (item is Weapon && (item as Weapon).Equals(player.EquippedWeapon) ? " [Equipped]" :
+                        (item is Armor && (item as Armor).Equals(player.EquippedArmor) ? " [Equipped]" : "")));
+                    if (item is Weapon)
+                    {
+                        Console.WriteLine((item as Weapon).ToString());
+                    }
+                    else if (item is Armor)
+                    {
+                        Console.WriteLine((item as Armor).ToString());
+                    }
+
                     i++;
                 }
 

@@ -10,7 +10,7 @@ public abstract class Item
         {
             if (value == "" || value is null)
             {
-                throw new EmptyNameException("Player name cannot be set as null or an empty string.");
+                throw new EmptyNameException("Item name cannot be set as null or an empty string.");
             }
             name = value;
         }
@@ -98,6 +98,24 @@ public class Weapon : Item, IRenameable
     {
 
     }
+
+    public override string ToString()
+    {
+        return "Atk: " + DamageModifier + " CritChance: " + CriticalChance + " CritDmg: " + CriticalModifier;
+    }
+
+    public override bool Equals(object? obj)
+    {
+        return Equals(obj as Weapon);
+    }
+
+    public bool Equals(Weapon otherWeapon)
+    {
+        return this.Name == otherWeapon.Name &&
+                this.DamageModifier == otherWeapon.DamageModifier &&
+                this.CriticalChance == otherWeapon.CriticalChance &&
+                this.CriticalModifier == otherWeapon.CriticalModifier;
+    }
 }
 
 public class Armor : Item, IRenameable
@@ -130,5 +148,23 @@ public class Armor : Item, IRenameable
     public Armor()
     {
 
+    }
+
+    public override string ToString()
+    {
+        return "Def: " + DefenseModifier + " Dodge: " + DodgeChance + " AtkBonus: " + AttackBonus;
+    }
+
+    public override bool Equals(object? obj)
+    {
+        return Equals(obj as Armor);
+    }
+
+    public bool Equals(Armor otherArmor)
+    {
+        return this.Name == otherArmor.Name && 
+                this.DefenseModifier == otherArmor.DefenseModifier &&
+                this.DodgeChance == otherArmor.DodgeChance &&
+                this.AttackBonus == otherArmor.AttackBonus;
     }
 }

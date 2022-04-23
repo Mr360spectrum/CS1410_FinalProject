@@ -682,7 +682,7 @@ namespace console
 
         static Game GetGame(GameHelper inHelper)
         {
-            var options = new List<string>() { "New Game", "Load Game", "Exit" };
+            var options = new List<string>() { "New Game", "Load Game", "How To Play", "Exit" };
 
             while (true)
             {
@@ -705,9 +705,28 @@ namespace console
                     case 1:
                         return LoadGameFromMenu(inHelper);
                     case 2:
+                        DisplayInstructions();
+                        Console.WriteLine("\nPress enter to go back to the menu.");
+                        Console.ReadLine();
+                        continue;
+                    case 3:
                         System.Environment.Exit(0);
                         break;
                 }
+            }
+        }
+
+        private static void DisplayInstructions()
+        {
+            Console.Clear();
+            try
+            {
+                Console.WriteLine(File.ReadAllText("help.txt"));
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("There was an issue loading 'help.txt.':");
+                Console.WriteLine(ex.Message);
             }
         }
     }

@@ -19,7 +19,41 @@ namespace console
             }
         }
 
-        public static void ShowInventory(bool forgeInArea, Player player)
+        static int GetInt(int min, int max)
+        {
+            while (true)
+            {
+                string input = Console.ReadLine();
+                try
+                {
+                    int parsedInput = int.Parse(input);
+                    if (parsedInput > max || parsedInput < min)
+                    {
+                        Console.WriteLine("That input is out of range.");
+                        continue;
+                    }
+                    return parsedInput;
+                }
+                catch
+                {
+                    Console.WriteLine("That is not a valid input.");
+                    continue;
+                }
+            }
+        }
+
+        ///<summary>
+        ///Clear the console, display a message below all other content, and move the cursor back to its original position. </summary>
+        static void DisplayMessage(string message)
+        {
+            int currentPos = Console.CursorTop;
+            Console.Clear();
+            Console.CursorTop = currentPos;
+            Console.WriteLine(message);
+            Console.CursorTop = 0;
+        }
+
+        static void ShowInventory(bool forgeInArea, Player player)
         {
             var inventory = player.Inventory;
             while (true)
@@ -310,7 +344,7 @@ namespace console
             }
         }
 
-        public static void Play(Game game, GameHelper helper)
+        static void Play(Game game, GameHelper helper)
         {
             Player player = game.player;
             if (player.Inventory.Count == 0)
@@ -484,7 +518,7 @@ namespace console
             }
         }
 
-        public static Game LoadGameFromMenu(GameHelper inHelper)
+        static Game LoadGameFromMenu(GameHelper inHelper)
         {
             var loadLogo = "LOAD";
             var fileOptions = GameHelper.GetSaves();
@@ -501,7 +535,7 @@ namespace console
             return inHelper.Load(fileOptions[nameSelection]);
         }
 
-        private static Game StartNewGame()
+        static Game StartNewGame()
         {
             Console.Clear();
             Console.WriteLine("Starting a new game...");
@@ -519,7 +553,7 @@ namespace console
             }
         }
 
-        private static int DisplayMenu(string logo, List<string> options, string message = "")
+        static int DisplayMenu(string logo, List<string> options, string message = "")
         {
             int cursorPos = 0;
             int maxPos = options.Count - 1;
@@ -582,7 +616,7 @@ namespace console
             }
         }
 
-        public static Game GetGame(GameHelper inHelper)
+        static Game GetGame(GameHelper inHelper)
         {
             var options = new List<string>() { "New Game", "Load Game", "Exit" };
 

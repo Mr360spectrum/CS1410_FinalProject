@@ -111,6 +111,11 @@ public class Weapon : Item, IRenameable
 
     public bool Equals(Weapon otherWeapon)
     {
+        if (otherWeapon == null)
+        {
+            return false;
+        }
+
         return this.Name == otherWeapon.Name &&
                 this.DamageModifier == otherWeapon.DamageModifier &&
                 this.CriticalChance == otherWeapon.CriticalChance &&
@@ -162,6 +167,11 @@ public class Armor : Item, IRenameable
 
     public bool Equals(Armor otherArmor)
     {
+        if (otherArmor == null)
+        {
+            return false;
+        }
+
         return this.Name == otherArmor.Name && 
                 this.DefenseModifier == otherArmor.DefenseModifier &&
                 this.DodgeChance == otherArmor.DodgeChance &&

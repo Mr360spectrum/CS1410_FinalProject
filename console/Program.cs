@@ -567,7 +567,15 @@ namespace console
 
         static Game LoadGameFromMenu(GameHelper inHelper)
         {
-            var loadLogo = "LOAD";
+            var loadLogo = @"
+  _      ____          _____  
+ | |    / __ \   /\   |  __ \ 
+ | |   | |  | | /  \  | |  | |
+ | |   | |  | |/ /\ \ | |  | |
+ | |___| |__| / ____ \| |__| |
+ |______\____/_/    \_\_____/ 
+                              
+";
             var fileOptions = GameHelper.GetSaves();
             if (fileOptions.Count == 0)
             {
@@ -585,6 +593,15 @@ namespace console
         static Game StartNewGame()
         {
             Console.Clear();
+            Console.WriteLine(@"
+  _   _ ________          __
+ | \ | |  ____\ \        / /
+ |  \| | |__   \ \  /\  / / 
+ | . ` |  __|   \ \/  \/ /  
+ | |\  | |____   \  /\  /   
+ |_| \_|______|   \/  \/    
+
+");
             Console.WriteLine("Starting a new game...");
             Console.WriteLine("What's your name?");
             string name;
@@ -611,7 +628,7 @@ namespace console
                 Console.Clear();
                 Console.ForegroundColor = GameHelper.DefaultColor;
                 Console.WriteLine(logo);
-                Console.WriteLine("Use the arrow keys to navigate.");
+                Console.WriteLine("Use the arrow keys to navigate and enter to select.");
                 if (message != "")
                 {
                     Console.WriteLine(message);
@@ -671,13 +688,13 @@ namespace console
             {
                 Console.Clear();
                 string logo = @"
-      :::::::::  :::::::::   ::::::::          ::::::::      :::       :::   :::   :::::::::: 
-     :+:    :+: :+:    :+: :+:    :+:        :+:    :+:   :+: :+:    :+:+: :+:+:  :+:         
-    +:+    +:+ +:+    +:+ +:+               +:+         +:+   +:+  +:+ +:+:+ +:+ +:+          
-   +#++:++#:  +#++:++#+  :#:               :#:        +#++:++#++: +#+  +:+  +#+ +#++:++#      
-  +#+    +#+ +#+        +#+   +#+#        +#+   +#+# +#+     +#+ +#+       +#+ +#+            
- #+#    #+# #+#        #+#    #+#        #+#    #+# #+#     #+# #+#       #+# #+#             
-###    ### ###         ########          ########  ###     ### ###       ### ##########    
+      :::    :::  ::::::::   :::     :::      :::      :::::::::   ::::    :::      :::  
+     :+:   :+:  :+:    :+:  :+:     :+:    :+: :+:    :+:    :+:  :+:+:   :+:    :+: :+: 
+    +:+  +:+   +:+    +:+  +:+     +:+   +:+   +:+   +:+    +:+  :+:+:+  +:+   +:+   +:+ 
+   +#++:++    +#+    +:+  +#+     +:+  +#++:++#++:  +#++:++#:   +#+ +:+ +#+  +#++:++#++: 
+  +#+  +#+   +#+    +#+   +#+   +#+   +#+     +#+  +#+    +#+  +#+  +#+#+#  +#+     +#+  
+ #+#   #+#  #+#    #+#    #+#+#+#    #+#     #+#  #+#    #+#  #+#   #+#+#  #+#     #+#   
+###    ###  ########       ###      ###     ###  ###    ###  ###    ####  ###     ###   
 
 ";
                 int selection = DisplayMenu(logo, options);
@@ -688,7 +705,7 @@ namespace console
                     case 1:
                         return LoadGameFromMenu(inHelper);
                     case 2:
-                        System.Environment.Exit(1);
+                        System.Environment.Exit(0);
                         break;
                 }
             }

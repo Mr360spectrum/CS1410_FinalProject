@@ -263,14 +263,14 @@ namespace console
                                 Console.WriteLine("");
                                 foreach (var item in inventory)
                                 {
-                                    if (item is Armor)
+                                    if (item is Armor && (item as Armor) != selectedItem as Armor)
                                     {
                                         Console.WriteLine((j + 1) + ". " + item.Name);
                                     }
                                     j++;
                                 }
 
-                                var otherArmor = Console.ReadLine();
+                                int otherArmorIndex = GetInt(1, inventory.Count) - 1;
 
                                 Console.WriteLine("Select which attribute to keep (the rest will be determined by the average):");
                                 var armorAttributes = new Item.ArmorAttributes[] { Item.ArmorAttributes.AttackBonus, Item.ArmorAttributes.Defense, Item.ArmorAttributes.DodgeChance };
@@ -279,13 +279,16 @@ namespace console
                                 foreach (var attribute in armorAttributes)
                                 {
                                     Console.WriteLine($"{armorAttrIndex + 1}. {attribute.ToString()}");
+                                    armorAttrIndex++;
                                 }
                                 var armorAttrSelection = int.Parse(Console.ReadLine());
                                 var selectedArmorAttr = armorAttributes[armorAttrSelection];
 
-                                player.GainItem(InventoryHelper.CombineArmor(selectedItem as Armor, inventory[int.Parse(otherArmor) - 1] as Armor, selectedArmorAttr));
+                                var otherArmor = inventory[otherArmorIndex] as Armor;
+
+                                player.GainItem(InventoryHelper.CombineArmor(selectedItem as Armor, otherArmor, selectedArmorAttr));
                                 inventory.Remove(selectedItem);
-                                inventory.RemoveAt(int.Parse(otherArmor) - 1);
+                                inventory.Remove(otherArmor);
                                 continue;
                             case "4":
                                 continue;
@@ -318,14 +321,14 @@ namespace console
                                 Console.WriteLine("");
                                 foreach (var item in inventory)
                                 {
-                                    if (item is Weapon)
+                                    if (item is Weapon && (item as Weapon) != selectedItem as Weapon)
                                     {
                                         Console.WriteLine((j + 1) + ". " + item.Name);
                                     }
                                     j++;
                                 }
 
-                                var otherWeapon = Console.ReadLine();
+                                int otherWeaponIndex = GetInt(1, inventory.Count) - 1;
 
                                 Console.WriteLine("Select which attribute to keep (the rest will be determined by the average):");
                                 var weaponAttributes = new Item.WeaponAttributes[] { Item.WeaponAttributes.Attack, Item.WeaponAttributes.CriticalChance, Item.WeaponAttributes.CriticalModifier };
@@ -339,10 +342,11 @@ namespace console
                                 var weaponAttrSelection = int.Parse(Console.ReadLine());
                                 var selectedWeaponAttr = weaponAttributes[weaponAttrSelection - 1];
 
-                                player.GainItem(InventoryHelper.CombineWeapons(selectedItem as Weapon, inventory[int.Parse(otherWeapon) - 1] as Weapon, selectedWeaponAttr));
+                                var otherWeapon = inventory[otherWeaponIndex];
+
+                                player.GainItem(InventoryHelper.CombineWeapons(selectedItem as Weapon, otherWeapon as Weapon, selectedWeaponAttr));
                                 inventory.Remove(selectedItem);
-                                inventory.RemoveAt(int.Parse(otherWeapon) - 1);
-                            
+                                inventory.Remove(otherWeapon);
                                 continue;
                             case "4":
                                 continue;

@@ -2,6 +2,7 @@
 using lib;
 using System.Text.Json;
 using System.IO;
+using System.Collections.Generic;
 
 namespace console
 {
@@ -13,7 +14,7 @@ namespace console
             while (true) //Allows the player to restart in case saving fails
             {
                 GameHelper helper = new GameHelper(new OnDiskGameStorageService());
-                Game game = helper.GetGame();
+                Game game = GetGame(helper);
                 Play(game, helper);
             }
         }
@@ -482,5 +483,136 @@ namespace console
                 }
             }
         }
+
+        public static Game LoadGameFromMenu(GameHelper inHelper)
+        {
+            var loadLogo = "LOAD";
+            var fileOptions = GameHelper.GetSaves();
+            if (fileOptions.Count == 0)
+            {
+                Console.Clear();
+                Console.WriteLine("There are no saved games.");
+                Console.WriteLine("Press a key to create a new game.");
+                Console.ReadKey();
+                return StartNewGame();
+            }
+            var nameSelection = DisplayMenu(loadLogo, fileOptions, "Select a saved game.");
+
+            return inHelper.Load(fileOptions[nameSelection]);
+        }
+
+        private static Game StartNewGame()
+        {
+            Console.Clear();
+            Console.WriteLine("Starting a new game...");
+            Console.WriteLine("What's your name?");
+            string name;
+            while (true)
+            {
+                name = Console.ReadLine();
+                if (name == null || name == "")
+                {
+                    Console.WriteLine("That is an invalid name.");
+                    continue;
+                }
+                return new Game(name);
+            }
+        }
+
+        private static int DisplayMenu(string logo, List<string> options, string message = "")
+        {
+            int cursorPos = 0;
+            int maxPos = options.Count - 1;
+
+            while (true)
+            {
+                //line instead of clearing the whole screen to prevent flickering
+                Console.Clear();
+                Console.ForegroundColor = GameHelper.DefaultColor;
+                Console.WriteLine(logo);
+                Console.WriteLine("Use the arrow keys to navigate.");
+                if (message != "")
+                {
+                    Console.WriteLine(message);
+                }
+                foreach (var option in options)
+                {
+                    if (options[cursorPos] == option)
+                    {
+                        Console.ForegroundColor = GameHelper.HighlightColor;
+                        Console.WriteLine($" > {option} <");
+                        Console.ForegroundColor = GameHelper.DefaultColor;
+                    }
+                    else
+                    {
+                        Console.WriteLine($"   {option}");
+                    }
+                }
+
+                var key = Console.ReadKey().Key;
+                switch (key)
+                {
+                    case ConsoleKey.DownArrow:
+                        //Loop back to top if "down" is pressed while cursor is at bottom
+                        if (cursorPos == maxPos)
+                        {
+                            cursorPos = 0;
+                        }
+                        //Move down
+                        else
+                        {
+                            cursorPos++;
+                        }
+                        break;
+                    case ConsoleKey.UpArrow:
+                        //Loop back to bottom if "up" is pressed while cursor is at top
+                        if (cursorPos == 0)
+                        {
+                            cursorPos = maxPos;
+                        }
+                        //Move up
+                        else
+                        {
+                            cursorPos--;
+                        }
+                        break;
+                    case ConsoleKey.Enter:
+                        return cursorPos;
+                }
+            }
+        }
+
+        public static Game GetGame(GameHelper inHelper)
+        {
+            var options = new List<string>() { "New Game", "Load Game", "Exit" };
+
+            while (true)
+            {
+                Console.Clear();
+                string logo = @"
+      :::::::::  :::::::::   ::::::::          ::::::::      :::       :::   :::   :::::::::: 
+     :+:    :+: :+:    :+: :+:    :+:        :+:    :+:   :+: :+:    :+:+: :+:+:  :+:         
+    +:+    +:+ +:+    +:+ +:+               +:+         +:+   +:+  +:+ +:+:+ +:+ +:+          
+   +#++:++#:  +#++:++#+  :#:               :#:        +#++:++#++: +#+  +:+  +#+ +#++:++#      
+  +#+    +#+ +#+        +#+   +#+#        +#+   +#+# +#+     +#+ +#+       +#+ +#+            
+ #+#    #+# #+#        #+#    #+#        #+#    #+# #+#     #+# #+#       #+# #+#             
+###    ### ###         ########          ########  ###     ### ###       ### ##########    
+
+";
+                int selection = DisplayMenu(logo, options);
+                switch (selection)
+                {
+                    case 0:
+                        return StartNewGame();
+                    case 1:
+                        return LoadGameFromMenu(inHelper);
+                    case 2:
+                        System.Environment.Exit(1);
+                        break;
+                }
+            }
+        }
     }
+
+
 }

@@ -42,15 +42,19 @@ namespace console
             }
         }
 
-        ///<summary>
-        ///Clear the console, display a message below all other content, and move the cursor back to its original position. </summary>
-        static void DisplayMessage(string message)
+        static string GetName()
         {
-            int currentPos = Console.CursorTop;
-            Console.Clear();
-            Console.CursorTop = currentPos;
-            Console.WriteLine(message);
-            Console.CursorTop = 0;
+            while (true)
+            {
+                string input = Console.ReadLine();
+                if (input == "" || input is null)
+                {
+                    Console.WriteLine("Please enter a valid name.");
+                    continue;
+                }
+
+                return input;
+            }
         }
 
         static void ShowInventory(bool forgeInArea, Player player)
@@ -85,7 +89,7 @@ namespace console
                     i++;
                 }
 
-                Console.WriteLine("Enter an empty string to exit.");
+                Console.WriteLine("\nEnter an empty string to exit.");
                 Console.WriteLine("Select which item you'd like to view options for: ");
                 string input = Console.ReadLine();
 
@@ -115,7 +119,7 @@ namespace console
                         {
                             case "1":
                                 Console.WriteLine("What would you like to rename the item to?");
-                                (selectedItem as Armor).Rename(Console.ReadLine());
+                                (selectedItem as Armor).Rename(GetName());
                                 break;
                             case "2":
                                 player.EquipArmor(selectedItem as Armor);
@@ -139,7 +143,7 @@ namespace console
                         {
                             case "1":
                                 Console.WriteLine("What would you like to rename the item to?");
-                                (selectedItem as Weapon).Rename(Console.ReadLine());
+                                (selectedItem as Weapon).Rename(GetName());
                                 break;
                             case "2":
                                 player.EquipWeapon(selectedItem as Weapon);
@@ -247,7 +251,7 @@ namespace console
                         {
                             case "1":
                                 Console.WriteLine("What would you like to rename the item to?");
-                                (selectedItem as Armor).Rename(Console.ReadLine());
+                                (selectedItem as Armor).Rename(GetName());
                                 break;
                             case "2":
                                 player.EquipArmor(selectedItem as Armor);
@@ -302,7 +306,7 @@ namespace console
                         {
                             case "1":
                                 Console.WriteLine("What would you like to rename the item to?");
-                                (selectedItem as Weapon).Rename(Console.ReadLine());
+                                (selectedItem as Weapon).Rename(GetName());
                                 break;
                             case "2":
                                 player.EquipWeapon(selectedItem as Weapon);
@@ -335,10 +339,10 @@ namespace console
                                 var weaponAttrSelection = int.Parse(Console.ReadLine());
                                 var selectedWeaponAttr = weaponAttributes[weaponAttrSelection - 1];
 
-
                                 player.GainItem(InventoryHelper.CombineWeapons(selectedItem as Weapon, inventory[int.Parse(otherWeapon) - 1] as Weapon, selectedWeaponAttr));
                                 inventory.Remove(selectedItem);
                                 inventory.RemoveAt(int.Parse(otherWeapon) - 1);
+                            
                                 continue;
                             case "4":
                                 continue;
@@ -402,7 +406,8 @@ namespace console
                         player.TakeDamage(enemy.Damage);
                         Console.WriteLine($"The {enemyType.ToString()} attacked you!");
                         Console.ForegroundColor = GameHelper.HighlightColor;
-                        Console.WriteLine($"You have {player.Health} HP.");
+                        int playerHealth = player.Health >= 0 ? player.Health : 0;
+                        Console.WriteLine($"You have {playerHealth} HP.");
                         Console.ForegroundColor = GameHelper.DefaultColor;
                         if (player.Health <= 0)
                         {

@@ -286,6 +286,20 @@ namespace console
                                 Console.WriteLine($"{selectedItem.Name} equipped.");
                                 break;
                             case 3:
+                                int armorCount = 0;
+                                foreach (var item in inventory)
+                                {
+                                    if (item is Armor)
+                                    {
+                                        armorCount++;
+                                    }
+                                }
+                                //Go back if there is no other armor piece to combine
+                                if (armorCount < 2)
+                                {
+                                    Console.WriteLine("There are no other items to combine.");
+                                    break;
+                                }
                                 Console.WriteLine("Select another armor piece to combine:");
                                 int j = 0;
                                 Console.WriteLine("");
@@ -344,6 +358,20 @@ namespace console
                                 Console.WriteLine($"{selectedItem.Name} equipped.");
                                 break;
                             case 3:
+                                int weaponCount = 0;
+                                foreach (var item in inventory)
+                                {
+                                    if (item is Weapon)
+                                    {
+                                        weaponCount++;
+                                    }
+                                }
+                                //Go back if there is no other weapon to combine
+                                if (weaponCount < 2)
+                                {
+                                    Console.WriteLine("There are no other items to combine.");
+                                    break;
+                                } 
                                 Console.WriteLine("Select another weapon to combine:");
                                 int j = 0;
                                 Console.WriteLine("");

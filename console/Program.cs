@@ -303,16 +303,35 @@ namespace console
                                 Console.WriteLine("Select another armor piece to combine:");
                                 int j = 0;
                                 Console.WriteLine("");
+                                List<int> armorIndices = new();
                                 foreach (var item in inventory)
                                 {
                                     if (item is Armor && (item as Armor) != selectedItem as Armor)
                                     {
                                         Console.WriteLine((j + 1) + ". " + item.Name);
+                                        armorIndices.Add(j);
                                     }
                                     j++;
                                 }
 
-                                int otherArmorIndex = GetInt(1, inventory.Count) - 1;
+                                    int otherArmorIndex;
+                                    bool isAvailableArmorIndex = false;
+                                    do
+                                    {
+                                        otherArmorIndex = GetInt(1, inventory.Count) - 1;
+                                        foreach (var index in armorIndices)
+                                        {
+                                            if (otherArmorIndex == index)
+                                            {
+                                                isAvailableArmorIndex = true;
+                                                break;
+                                            }
+                                        }
+                                        if (!isAvailableArmorIndex)
+                                        {
+                                            Console.WriteLine("That is not a valid option.");
+                                        }
+                                    } while (!isAvailableArmorIndex);
 
                                 Console.WriteLine("Select which attribute to keep (the rest will be determined by the average):");
                                 var armorAttributes = new Item.ArmorAttributes[] { Item.ArmorAttributes.AttackBonus, Item.ArmorAttributes.Defense, Item.ArmorAttributes.DodgeChance };
@@ -323,7 +342,7 @@ namespace console
                                     Console.WriteLine($"{armorAttrIndex + 1}. {attribute.ToString()}");
                                     armorAttrIndex++;
                                 }
-                                var armorAttrSelection = GetInt(1, 3);
+                                var armorAttrSelection = GetInt(1, 3) - 1;
                                 var selectedArmorAttr = armorAttributes[armorAttrSelection];
 
                                 var otherArmor = inventory[otherArmorIndex] as Armor;
@@ -375,17 +394,36 @@ namespace console
                                 Console.WriteLine("Select another weapon to combine:");
                                 int j = 0;
                                 Console.WriteLine("");
+                                List<int> weaponIndices = new();
                                 foreach (var item in inventory)
                                 {
                                     if (item is Weapon && (item as Weapon) != selectedItem as Weapon)
                                     {
                                         Console.WriteLine((j + 1) + ". " + item.Name);
+                                        weaponIndices.Add(j);
                                     }
                                     j++;
                                 }
 
-                                int otherWeaponIndex = GetInt(1, inventory.Count) - 1;
-
+                                int otherWeaponIndex;
+                                bool isAvailableWeaponIndex = false;
+                                do
+                                {
+                                    otherWeaponIndex = GetInt(1, inventory.Count) - 1;
+                                    foreach (var index in weaponIndices)
+                                    {
+                                        if (otherWeaponIndex == index)
+                                        {
+                                            isAvailableWeaponIndex = true;
+                                            break;
+                                        }
+                                    }
+                                    if (!isAvailableWeaponIndex)
+                                    {
+                                        Console.WriteLine("That is not a valid option.");
+                                    }
+                                } while (!isAvailableWeaponIndex);
+                                
                                 Console.WriteLine("Select which attribute to keep (the rest will be determined by the average):");
                                 var weaponAttributes = new Item.WeaponAttributes[] { Item.WeaponAttributes.Attack, Item.WeaponAttributes.CriticalChance, Item.WeaponAttributes.CriticalModifier };
 

@@ -2,8 +2,17 @@ using System.Text.Json;
 
 namespace lib;
 
+/// <summary>
+/// Represents the methods that are responsible for splitting the inventory,
+/// serializing the inventory, and combining weapons.
+/// </summary>
 public class InventoryHelper
 {
+    /// <summary>
+    /// Serializes the inventory into separate files based on the derived class.
+    /// </summary>
+    /// <param name="inInv">The inventory (List of type Item) to serialize.</param>
+    /// <returns>A tuple of strings containing each JSON string.</returns>
     public static (string, string, string) GetJson(List<Item> inInv)
     {
         var (weaponsList, armorList, craftingList) = InventoryHelper.SplitInventory(inInv);
@@ -14,6 +23,11 @@ public class InventoryHelper
         return (weaponsJsonStr, armorJsonStr, craftingJsonStr);
     }
 
+    /// <summary>
+    /// Splits the inventory into separate Lists based on the derived class.
+    /// </summary>
+    /// <param name="inInv">The inventory (List of type Item) to split.</param>
+    /// <returns>A tuple of Lists of the objects of the classes that inherit from Item.</returns>
     public static (List<Weapon>, List<Armor>, List<CraftingItem>) SplitInventory(List<Item> inInv)
     {
         var weaponsSaveList = new List<Weapon>();
@@ -39,6 +53,15 @@ public class InventoryHelper
         return (weaponsSaveList, armorSaveList, craftingSaveList);
     }
 
+    /// <summary>
+    /// Combines two Weapons by keeping the name of the first Weapon and the highest value between the two
+    /// Weapons for the selected attribute and gets the average for the rest of the attributes.
+    /// </summary>
+    /// <param name="weapon1">The first Weapon to combine. The name of the returned Weapon is
+    /// retrieved from this Weapon.</param>
+    /// <param name="weapon2">The second Weapon to combine.</param>
+    /// <param name="selectedAttr">The attribute to keep the highest value of.</param>
+    /// <returns>A Weapon object with properties based on the two provided Weapons.</returns>
     public static Weapon CombineWeapons(Weapon weapon1, Weapon weapon2, Item.WeaponAttributes selectedAttr)
     {
         int newDamageModifier;
@@ -71,6 +94,15 @@ public class InventoryHelper
         }
     }
 
+    /// <summary>
+    /// Combines two Armor objects by keeping the name of the first Armor object and the highest value between the two
+    /// Armor objects for the selected attribute and gets the average for the rest of the attributes.
+    /// </summary>
+    /// <param name="armor1">The first Armor to combine. The name of the returned Armor object is
+    /// retrieved from this Armor.</param>
+    /// <param name="armor2">The second Armor to combine.</param>
+    /// <param name="selectedAttr">The attribute to keep the highest value of.</param>
+    /// <returns>An Armor object with properties based on the two provided Armor objects.</returns>
     public static Armor CombineArmor(Armor armor1, Armor armor2, Item.ArmorAttributes selectedAttr)
     {
         int newDefenseModifier;
@@ -100,6 +132,11 @@ public class InventoryHelper
         }
     }
 
+    /// <summary>
+    /// Creates a new Armor object with random stats. Used when combining sticks in the inventory.
+    /// </summary>
+    /// <param name="name">The name of the new Armor object.</param>
+    /// <returns>An Armor object with the provided name and random stats.</returns>
     public static Armor ForgeArmor(string name)
     {
         var rand = new Random();
@@ -110,6 +147,11 @@ public class InventoryHelper
         return new Armor(name, defenseModifier, dodgeChance, attackBonus);
     }
 
+    /// <summary>
+    /// Creates a new Weapon object with random stats. Used when combining sticks in the inventory.
+    /// </summary>
+    /// <param name="name">The name of the new Weapon object.</param>
+    /// <returns>A Weapon object with the provided name and random stats.</returns>
     public static Weapon ForgeWeapon(string name)
     {
         var rand = new Random();
@@ -120,6 +162,11 @@ public class InventoryHelper
         return new Weapon(name, attack, criticalChance, criticalModifier);
     }
 
+    /// <summary>
+    /// Creates a new Armor object with random stats. Used when generating Armor for chests.
+    /// </summary>
+    /// <param name="name">The name of the new Armor object.</param>
+    /// <returns>An Armor object with the provided name and random stats.</returns>
     public static Armor CreateNewArmorInChest()
     {
         var rand = new Random();
@@ -130,6 +177,11 @@ public class InventoryHelper
         return new Armor("New Armor", defenseModifier, dodgeChance, attackBonus);
     }
 
+    /// <summary>
+    /// Creates a new Weapon object with random stats. Used when generating Weapons for chests.
+    /// </summary>
+    /// <param name="name">The name of the new Weapon object.</param>
+    /// <returns>A Weapon object with the provided name and random stats.</returns>
     public static Weapon CreateNewWeaponInChest()
     {
         var rand = new Random();

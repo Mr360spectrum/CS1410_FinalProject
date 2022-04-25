@@ -1,5 +1,9 @@
 namespace lib;
 
+/// <summary>
+/// Represents the object that contains the Player object and handles assigning 
+/// property values to the Player object when existing saves are used.
+/// </summary>
 public class Game
 {
     public Player player { get; set; }
@@ -20,6 +24,10 @@ public class Game
 
     }
 
+    /// <summary>
+    /// Gets the Name property from the Player object.
+    /// </summary>
+    /// <returns>A string representing the Player object's Name value.</returns>
     public string GetPlayerName()
     {
         return this.player.Name;

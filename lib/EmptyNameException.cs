@@ -2,6 +2,10 @@ using System.Runtime.Serialization;
 
 namespace lib
 {
+    /// <summary>
+    /// The excpetion that is thrown when the Name property in a Player or Item 
+    /// object is set to an empty or null string.
+    /// </summary>
     [Serializable]
     public class EmptyNameException : Exception
     {

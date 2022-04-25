@@ -27,6 +27,13 @@ namespace console
             }
         }
 
+        /// <summary>
+        /// Continues to ask the user for an integer until the input is valid
+        /// and is within the given range.
+        /// </summary>
+        /// <param name="min">The lower bound for the integer.</param>
+        /// <param name="max">The upper bound for the integer.</param>
+        /// <returns>A valid integer within the given range.</returns>
         static int GetInt(int min, int max)
         {
             while (true)
@@ -50,6 +57,11 @@ namespace console
             }
         }
 
+        /// <summary>
+        /// Continues to ask the user for a string until the input is not an 
+        /// empty string or null.
+        /// </summary>
+        /// <returns>A non-empty or null string.</returns>
         static string GetName()
         {
             while (true)
@@ -65,6 +77,14 @@ namespace console
             }
         }
 
+        /// <summary>
+        /// Displays each item in the player's inventory and allows the user to rename,
+        /// equip, and combine items (if a forge is available) depending on the item type.
+        /// </summary>
+        /// <param name="forgeInArea">Represents whether a forge is in the current area. If true,
+        /// the options to combine weapons, armor, or crafting items will be available.</param>
+        /// <param name="player">The Player object representing the current player and all members
+        /// that are part of the object. Used to access the player's inventory.</param>
         static void ShowInventory(bool forgeInArea, Player player)
         {
             var inventory = player.Inventory;
@@ -314,24 +334,24 @@ namespace console
                                     j++;
                                 }
 
-                                    int otherArmorIndex;
-                                    bool isAvailableArmorIndex = false;
-                                    do
+                                int otherArmorIndex;
+                                bool isAvailableArmorIndex = false;
+                                do
+                                {
+                                    otherArmorIndex = GetInt(1, inventory.Count) - 1;
+                                    foreach (var index in armorIndices)
                                     {
-                                        otherArmorIndex = GetInt(1, inventory.Count) - 1;
-                                        foreach (var index in armorIndices)
+                                        if (otherArmorIndex == index)
                                         {
-                                            if (otherArmorIndex == index)
-                                            {
-                                                isAvailableArmorIndex = true;
-                                                break;
-                                            }
+                                            isAvailableArmorIndex = true;
+                                            break;
                                         }
-                                        if (!isAvailableArmorIndex)
-                                        {
-                                            Console.WriteLine("That is not a valid option.");
-                                        }
-                                    } while (!isAvailableArmorIndex);
+                                    }
+                                    if (!isAvailableArmorIndex)
+                                    {
+                                        Console.WriteLine("That is not a valid option.");
+                                    }
+                                } while (!isAvailableArmorIndex);
 
                                 Console.WriteLine("Select which attribute to keep (the rest will be determined by the average):");
                                 var armorAttributes = new Item.ArmorAttributes[] { Item.ArmorAttributes.AttackBonus, Item.ArmorAttributes.Defense, Item.ArmorAttributes.DodgeChance };
@@ -390,7 +410,7 @@ namespace console
                                 {
                                     Console.WriteLine("There are no other items to combine.");
                                     break;
-                                } 
+                                }
                                 Console.WriteLine("Select another weapon to combine:");
                                 int j = 0;
                                 Console.WriteLine("");
@@ -423,7 +443,7 @@ namespace console
                                         Console.WriteLine("That is not a valid option.");
                                     }
                                 } while (!isAvailableWeaponIndex);
-                                
+
                                 Console.WriteLine("Select which attribute to keep (the rest will be determined by the average):");
                                 var weaponAttributes = new Item.WeaponAttributes[] { Item.WeaponAttributes.Attack, Item.WeaponAttributes.CriticalChance, Item.WeaponAttributes.CriticalModifier };
 
@@ -456,6 +476,13 @@ namespace console
             }
         }
 
+        /// <summary>
+        /// Handles gameplay. The existence of enemies, chests, and forges in each area is determined
+        /// by random number generation.
+        /// </summary>
+        /// <param name="game">The Game object that represents the game that was loaded in, whether it
+        /// is a new game or an existing save.</param>
+        /// <param name="helper">The GameHelper object that will handle saving the current game.</param>
         static void Play(Game game, GameHelper helper)
         {
             Player player = game.player;
@@ -475,6 +502,7 @@ namespace console
                 Console.ReadKey(true);
             }
 
+            //If the player chooses to exit, "shouldContinue" will be set to false and the loop will no longer run.
             bool shouldContinue = true;
             while (shouldContinue)
             {
@@ -498,6 +526,7 @@ namespace console
                     Console.WriteLine($"There's a {enemyType.ToString()} in the area!");
                     Console.WriteLine("Press 'R' to run, 'I' to view the inventory, or 'enter' to attack!");
 
+                    //Continue running until the enemy dies, the player dies, or if the player chooses to run.
                     bool fightingEnemy = true;
                     while (fightingEnemy)
                     {
@@ -580,6 +609,7 @@ namespace console
                     Console.WriteLine("While here, you can combine and forge weapons in the inventory.");
                 }
 
+                //Continue to run until the player moves on or exits to the main menu.
                 var waiting = true;
                 while (waiting)
                 {
@@ -604,6 +634,8 @@ namespace console
                     }
                 }
 
+                //Allow the player to retry saving. If the player chooses to restart instead, exit
+                //back to the main menu.
                 while (true)
                 {
                     try
@@ -631,6 +663,15 @@ namespace console
             }
         }
 
+        /// <summary>
+        /// Displays the saves that were found in the "saves" folder at the project root 
+        /// and allows the user to choose which one to load from. If there are none, the
+        /// user will be asked to create a new save.
+        /// </summary>
+        /// <param name="inHelper">The GameHelper object that will handle loading in the 
+        /// selected game.</param>
+        /// <returns>A Game object with the information retrieved from the save files. If
+        /// a new game was created instead, returns a Game object returned by StartNewGame().</returns>
         static Game LoadGameFromMenu(GameHelper inHelper)
         {
             var loadLogo = @"
@@ -656,6 +697,12 @@ namespace console
             return inHelper.Load(fileOptions[nameSelection]);
         }
 
+        /// <summary>
+        /// Creates a new Game object after asking the user for a name. The Player object in this
+        /// Game object will be given the name that the player provides.
+        /// </summary>
+        /// <returns>Returns a new Game object that contains a Player object with the name 
+        /// provided by the user.</returns>
         static Game StartNewGame()
         {
             Console.Clear();
@@ -671,18 +718,18 @@ namespace console
             Console.WriteLine("Starting a new game...");
             Console.WriteLine("What's your name?");
             string name;
-            while (true)
-            {
-                name = GetName();
-                if (name == null || name == "")
-                {
-                    Console.WriteLine("That is an invalid name.");
-                    continue;
-                }
-                return new Game(name);
-            }
+            name = GetName();
+            return new Game(name);
         }
 
+        /// <summary>
+        /// Displays a menu with a logo and message at the top of the console. Iterates through 
+        /// the list of options provided and allows the user to navigate using the arrow and enter keys.
+        /// </summary>
+        /// <param name="logo">The logo/design to be displayed at the top of the console.</param>
+        /// <param name="options">Each option to be available for selection.</param>
+        /// <param name="message">The string to be displayed above the options (empty by default).</param>
+        /// <returns>The index of the selected option.</returns>
         static int DisplayMenu(string logo, List<string> options, string message = "")
         {
             int cursorPos = 0;
@@ -690,7 +737,6 @@ namespace console
 
             while (true)
             {
-                //line instead of clearing the whole screen to prevent flickering
                 Console.Clear();
                 Console.ForegroundColor = GameHelper.DefaultColor;
                 Console.WriteLine(logo);
@@ -746,6 +792,12 @@ namespace console
             }
         }
 
+        /// <summary>
+        /// Displays the main menu. Allows the user to start a new save, load an existing save,
+        /// learn how to play, or exit the program.
+        /// </summary>
+        /// <param name="inHelper">The GameHelper object that will handle saving and loading.</param>
+        /// <returns>A Game object that is either new or loaded in from an existing save.</returns>
         static Game GetGame(GameHelper inHelper)
         {
             var options = new List<string>() { "New Game", "Load Game", "How To Play", "Exit" };
@@ -782,6 +834,9 @@ namespace console
             }
         }
 
+        /// <summary>
+        /// Displays the contents of help.txt.
+        /// </summary>
         private static void DisplayInstructions()
         {
             Console.Clear();
@@ -796,6 +851,4 @@ namespace console
             }
         }
     }
-
-
 }

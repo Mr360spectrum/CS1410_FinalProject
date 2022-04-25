@@ -1,5 +1,8 @@
 namespace lib;
 
+/// <summary>
+/// That abstract class that each Item type inherits from.
+/// </summary>
 public abstract class Item
 {
     protected string name;
@@ -52,6 +55,9 @@ public abstract class Item
     }
 }
 
+/// <summary>
+/// Represents items that can be used to forge new Weapons or Armor.
+/// </summary>
 public class CraftingItem : Item
 {
     public CraftingItem(string inName)
@@ -67,6 +73,9 @@ public class CraftingItem : Item
     }
 }
 
+/// <summary>
+/// Represents Weapon items to be used to attacking.
+/// </summary>
 public class Weapon : Item, IRenameable
 {
     private int damageModifier;
@@ -123,6 +132,9 @@ public class Weapon : Item, IRenameable
     }
 }
 
+/// <summary>
+/// Represents Armor objects to be used for defense.
+/// </summary>
 public class Armor : Item, IRenameable
 {
     private int defenseModifier;

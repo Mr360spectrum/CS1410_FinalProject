@@ -1,6 +1,9 @@
 namespace lib;
 using System.Collections.Generic;
 
+/// <summary>
+/// Represents the player and inherits from Entity. Also contains the inventory and equipped items.
+/// </summary>
 public class Player : Entity
 {
     private string name;
@@ -62,6 +65,10 @@ public class Player : Entity
         }
     }
 
+    /// <summary>
+    /// Calls TakeDamage() on the attacking enemy.
+    /// </summary>
+    /// <param name="inEnemy">The enemy to call TakeDamage() on.</param>
     public void Attack(Enemy inEnemy)
     {
         if (EquippedWeapon != null)
@@ -74,6 +81,11 @@ public class Player : Entity
         }
     }
 
+    /// <summary>
+    /// Decreases the player's health based on the damage amount and defense 
+    /// modifier of the equipped armor.
+    /// </summary>
+    /// <param name="amount">The initial damage amount.</param>
     public override void TakeDamage(double amount)
     {
         if (EquippedArmor != null)
@@ -95,11 +107,19 @@ public class Player : Entity
         }
     }
 
+    /// <summary>
+    /// Assigns EquippedWeapon to the provided Weapon object.
+    /// </summary>
+    /// <param name="inWeapon">The Weapon object to assign to EquippedWeapon.</param>
     public void EquipWeapon(Weapon inWeapon)
     {
         this.EquippedWeapon = inWeapon;
     }
 
+    /// <summary>
+    /// Assigns EquippedArmor to the provided Armor object.
+    /// </summary>
+    /// <param name="inArmor">The Armor object to assign to EquippedArmor</param>
     public void EquipArmor(Armor inArmor)
     {
         this.EquippedArmor = inArmor;
@@ -109,6 +129,10 @@ public class Player : Entity
         }
     }    
 
+    /// <summary>
+    /// Adds the provided Item object to the inventory.
+    /// </summary>
+    /// <param name="item">The Item object to add to the inventory.</param>
     public void GainItem(Item item)
     {
         this.inventory.Add(item);

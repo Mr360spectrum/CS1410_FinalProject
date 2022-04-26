@@ -1,6 +1,5 @@
 ﻿using System;
 using lib;
-using System.Text.Json;
 using System.IO;
 using System.Collections.Generic;
 
@@ -550,6 +549,7 @@ namespace console
                                 break;
                             case ConsoleKey.I:
                                 ShowInventory(false, player);
+                                helper.Save(game);
                                 Console.WriteLine($"Press enter to attack the {enemyType.ToString()}");
                                 break;
                             case ConsoleKey.Enter:
@@ -619,6 +619,7 @@ namespace console
                     {
                         case ConsoleKey.I:
                             ShowInventory(forgeInArea, player);
+                            helper.Save(game);
                             break;
                         case ConsoleKey.Spacebar:
                             waiting = false;
@@ -626,6 +627,7 @@ namespace console
                         case ConsoleKey.Escape:
                             waiting = false;
                             shouldContinue = false;
+                            helper.Save(game);
                             Console.Clear();
                             break;
                         default:

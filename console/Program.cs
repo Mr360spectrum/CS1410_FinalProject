@@ -147,6 +147,8 @@ namespace console
                     }
                 }
 
+                // int selection = GetSelectionFromNavigableInventory(player);
+
                 var selectedItem = inventory[selection];
                 Console.Clear();
                 if (!forgeInArea)
@@ -665,6 +667,76 @@ namespace console
                                 continue;
                         }
                     }
+                }
+            }
+        }
+
+        /// <summary>
+        /// Displays the inventory with a menu similar to that used for the main menu
+        /// that can be navigated with the arrow keys.
+        /// </summary>
+        /// <param name="Inventory">The inventory (list of type Item) to be displayed.</param>
+        static int GetSelectionFromNavigableInventory(Player player)
+        {
+            List<Item> inventory = player.Inventory;
+            int cursorPos = 0;
+            int maxPos = inventory.Count - 1;
+
+            while (true)
+            {
+                Console.Clear();
+                Console.ForegroundColor = GameHelper.DefaultColor;
+                Console.WriteLine("Use the arrow keys to navigate and enter to select.");
+                Console.WriteLine("Select which item you'd like to view options for: ");
+                foreach (var item in inventory)
+                {
+                    if (inventory[cursorPos] == item)
+                    {
+                        Console.ForegroundColor = GameHelper.HighlightColor;
+                        Console.WriteLine(" > " + item.Name + (item is Weapon && (item as Weapon).Equals(player.EquippedWeapon) ? " [Equipped]" :
+                            (item is Armor && (item as Armor).Equals(player.EquippedArmor) ? " [Equipped]" : "")));
+                        Console.ForegroundColor = GameHelper.DefaultColor;
+                    }
+                    else
+                    {
+                        Console.WriteLine($"   {item.Name}");
+                    }
+
+                    if (item is Weapon)
+                    {
+                        Console.WriteLine((item as Weapon).ToString());
+                    }
+                    else if (item is Armor)
+                    {
+                        Console.WriteLine((item as Armor).ToString());
+                    }
+                }
+
+                var key = Console.ReadKey().Key;
+                switch (key)
+                {
+                    case ConsoleKey.DownArrow:
+                        if (cursorPos == maxPos)
+                        {
+                            cursorPos = 0;
+                        }
+                        else
+                        {
+                            cursorPos++;
+                        }
+                        break;
+                    case ConsoleKey.UpArrow:
+                        if (cursorPos == 0)
+                        {
+                            cursorPos = maxPos;
+                        }
+                        else
+                        {
+                            cursorPos--;
+                        }
+                        break;
+                    case ConsoleKey.Enter:
+                        return cursorPos;
                 }
             }
         }

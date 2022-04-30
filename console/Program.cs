@@ -524,6 +524,7 @@ namespace console
                     var enemy = new Enemy(enemyType);
                     Console.WriteLine($"There's a {enemyType.ToString()} in the area!");
                     Console.WriteLine("Press 'R' to run, 'I' to view the inventory, or 'enter' to attack!");
+                    Console.WriteLine("Viewing the inventory or entering an invalid input will result in you taking damage!");
 
                     //Continue running until the enemy dies, the player dies, or if the player chooses to run.
                     bool fightingEnemy = true;
@@ -550,9 +551,11 @@ namespace console
                             case ConsoleKey.I:
                                 ShowInventory(false, player);
                                 helper.Save(game);
-                                Console.WriteLine($"Press enter to attack the {enemyType.ToString()}");
+                                Console.Clear();
+                                Console.WriteLine($"Press 'R' to run, 'I' to view the inventory, or enter to attack the {enemyType.ToString()}!");
                                 break;
                             case ConsoleKey.Enter:
+                                Console.Clear();
                                 if (player.EquippedWeapon is null)
                                 {
                                     Console.ForegroundColor = GameHelper.HighlightColor;
@@ -567,6 +570,7 @@ namespace console
                                     fightingEnemy = false;
                                     break;
                                 }
+                                Console.WriteLine($"Press 'R' to run, 'I' to view the inventory, or enter to attack the {enemyType.ToString()}!");
                                 break;
                         }
                     }

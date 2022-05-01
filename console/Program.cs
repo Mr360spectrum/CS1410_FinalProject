@@ -541,6 +541,7 @@ namespace console
                         if (player.Health <= 0)
                         {
                             Console.WriteLine("You died.");
+                            Console.ResetColor();
                             System.Environment.Exit(0);
                         }
                         var attackKey = Console.ReadKey(true).Key;
@@ -878,6 +879,7 @@ namespace console
         /// <returns>A Game object that is either new or loaded in from an existing save.</returns>
         static Game GetGame(GameHelper inHelper)
         {
+            var originalColor = Console.BackgroundColor;
             var options = new List<string>() { "New Game", "Load Game", "How To Play", "Exit" };
 
             while (true)
@@ -906,6 +908,7 @@ namespace console
                         Console.ReadLine();
                         continue;
                     case 3:
+                        Console.ResetColor();
                         System.Environment.Exit(0);
                         break;
                 }
